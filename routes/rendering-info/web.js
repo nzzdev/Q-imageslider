@@ -4,6 +4,11 @@ const path = require('path')
 
 const stylesDir = path.join(__dirname, '/../../styles/')
 const styleHashMap = require(path.join(stylesDir, 'hashMap.json'))
+const viewsDir = path.join(__dirname, '/../../views/')
+
+// setup nunjucks environment
+const nunjucks = require('nunjucks')
+const nunjucksEnv = new nunjucks.Environment()
 
 // POSTed item will be validated against given schema
 // hence we fetch the JSON schema...
@@ -52,6 +57,12 @@ module.exports = {
   handler: async function (request, h) {
     const item = request.payload.item
 
+    const context = {
+      item: item,
+      displayOptions: request.payload.toolRuntimeConfig.displayOptions || {},
+      id: `q_imageslider_${request.query._id}_${Math.floor(Math.random() * 100000)}`.replace(/-/g, '')
+    }
+
     const renderingInfo = {
       polyfills: ['Promise'],
       stylesheets: [
@@ -61,10 +72,29 @@ module.exports = {
       ],
       scripts: [
         {
-          content: 'var p = new Promise(function(resolve) { resolve(); }) p.then(function() { console.log ("Q-imageslider script executed")});'
+          content: `
+          function ${context.id}_initImageslider() {
+            var sliderSwitch = document.querySelector(".q-imageslider-switch");
+            var sliderImages = document.querySelectorAll(".q-imageslider-image");
+            sliderSwitch.addEventListener("change", function() {
+                if(this.checked) {
+                    sliderImages[0].classList.add("q-imageslider-image--is-hidden");
+                    sliderImages[0].classList.remove("q-imageslider-image--is-visible");
+                    sliderImages[1].classList.add("q-imageslider-image--is-visible");
+                    sliderImages[1].classList.remove("q-imageslider-image--is-hidden");
+                } else {
+                    sliderImages[0].classList.add("q-imageslider-image--is-visible");
+                    sliderImages[0].classList.remove("q-imageslider-image--is-hidden");
+                    sliderImages[1].classList.add("q-imageslider-image--is-hidden");
+                    sliderImages[1].classList.remove("q-imageslider-image--is-visible");
+                }
+            })
+          };
+          ${context.id}_initImageslider();
+          `
         }
       ],
-      markup: `<h1>${item.title}</h1><h2>${item.subtitle}</h2><p>rendered by Q-imageslider`
+      markup: nunjucksEnv.render(viewsDir + 'imageslider.html', context)
     }
 
     return renderingInfo

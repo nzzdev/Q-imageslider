@@ -1,4 +1,15 @@
-$color: purple;
-h1 {
-  color: $color;
+.q-imageslider {
+  opacity: 1 !important;
+}
+
+.q-imageslider__subtitle {
+  margin-bottom: 12px;
+}
+
+.q-imageslider-image--is-visible {
+  display: block !important;
+}
+
+.q-imageslider-image--is-hidden {
+  display: none !important;
 }
