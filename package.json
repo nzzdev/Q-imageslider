@@ -19,6 +19,7 @@
     "joi": "^13.0.2",
     "lab": "^15.1.2",
     "node-sass": "^4.7.2",
+    "nunjucks": "^3.0.1",
     "postcss": "^6.0.15",
     "postcss-import": "^11.0.0"
   },
