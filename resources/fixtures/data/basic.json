@@ -1,4 +1,18 @@
 {
-  "title": "Title",
-  "subtitle": "Subtitle"
+  "title": "Wandel im Verborgenen",
+  "subtitle": "Die NZZ hat Ansichtskarten von anno dazumal denselben Perspektiven von heute gegenübergestellt. Manifest wurden landschaftlicher, klimatischer und wirtschaftlicher Wandel und Merkmale der Politik.",
+  "images": [
+    {
+      "url": "www.example.com/old.jpg",
+      "label": "1965",
+      "caption": "Ansichtskarte, versendet 1965: Der Verkehr auf dem Zürcher Bahnhofplatz wird von Hand geregelt.",
+      "credit": "(Bild: Simon Tanner / NZZ)"
+    },
+    {
+      "url": "www.example.com/new.jpg",
+      "label": "2017",
+      "caption": "Das heutige Bild ist ähnlich. Grundlegend verändert hat sich der HB aber unter der Erde.",
+      "credit": "(Bild: Simon Tanner / NZZ)"
+    }
+  ]
 }
