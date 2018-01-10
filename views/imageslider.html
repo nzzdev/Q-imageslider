@@ -31,21 +31,22 @@
   </div>
   {% endif %}
   <div>
-      {% for image in item.images %}
-        {% if loop.first %}
-          <div style="display: block" class="q-imageslider-image">
-        {% else %}
-          <div style="display: none" class="q-imageslider-image">
-        {% endif %}
-            <div style="position:relative; padding-bottom: 66.6%">
-              <img src="{{ image.url }}" style="position:absolute; display:block; width:100%"/>
-            </div>
-            <p class="s-font-note s-font-note--light">
-              {{ image.caption }}
-              <span>{{ image.credit }}</span>
-            </p>
+    {% for image in item.images %}
+      {% if loop.first %}
+        <div style="display: block" class="q-imageslider-image">
+      {% else %}
+        <div style="display: none" class="q-imageslider-image">
+      {% endif %}
+          <div style="position:relative; padding-bottom: 66.6%">
+            <img src="{{ image.url }}" style="position:absolute; display:block; width:100%"/>
+          </div>
+          <p class="s-font-note s-font-note--light">
+            {{ image.caption }}
+            <span>{{ image.credit }}</span>
+          </p>
         </div>
-      {% endfor %}
+    {% endfor %}
+        </div>
   </div>
-</div>
+  {%- include "./footer.html" %}
 </div>
