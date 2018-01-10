@@ -5,6 +5,7 @@ const path = require('path')
 const stylesDir = path.join(__dirname, '/../../styles/')
 const styleHashMap = require(path.join(stylesDir, 'hashMap.json'))
 const viewsDir = path.join(__dirname, '/../../views/')
+const getScript = require('../../helpers/renderingInfoScript.js').getScript
 
 // setup nunjucks environment
 const nunjucks = require('nunjucks')
@@ -60,7 +61,8 @@ module.exports = {
     const context = {
       item: item,
       displayOptions: request.payload.toolRuntimeConfig.displayOptions || {},
-      id: `q_imageslider_${request.query._id}_${Math.floor(Math.random() * 100000)}`.replace(/-/g, '')
+      id: `q_imageslider_${request.query._id}_${Math.floor(Math.random() * 100000)}`.replace(/-/g, ''),
+      multiple: item.images.length > 2
     }
 
     const renderingInfo = {
@@ -72,26 +74,7 @@ module.exports = {
       ],
       scripts: [
         {
-          content: `
-          function ${context.id}_initImageslider() {
-            var sliderSwitch = document.querySelector(".q-imageslider-switch");
-            var sliderImages = document.querySelectorAll(".q-imageslider-image");
-            sliderSwitch.addEventListener("change", function() {
-                if(this.checked) {
-                    sliderImages[0].classList.add("q-imageslider-image--is-hidden");
-                    sliderImages[0].classList.remove("q-imageslider-image--is-visible");
-                    sliderImages[1].classList.add("q-imageslider-image--is-visible");
-                    sliderImages[1].classList.remove("q-imageslider-image--is-hidden");
-                } else {
-                    sliderImages[0].classList.add("q-imageslider-image--is-visible");
-                    sliderImages[0].classList.remove("q-imageslider-image--is-hidden");
-                    sliderImages[1].classList.add("q-imageslider-image--is-hidden");
-                    sliderImages[1].classList.remove("q-imageslider-image--is-visible");
-                }
-            })
-          };
-          ${context.id}_initImageslider();
-          `
+          content: getScript(context.id, item.images.length)
         }
       ],
       markup: nunjucksEnv.render(viewsDir + 'imageslider.html', context)

@@ -1,11 +1,35 @@
 <div class="s-q-item q-imageslider" style="opacity: 0;" id="{{ id }}">
   {%- include "./header.html" %}
+  {% if multiple %}
+  <div>
+    <div class="q-imageslider-bar s-color-gray-4"></div>
+    <div class="q-imageslider-button-container">
+        {% for image in item.images %}
+          {% if loop.first %}
+          <button type="button" class="q-imageslider-button q-imageslider-button--first">
+              <label class="q-imageslider-label s-color-gray-9">{{ image.label }}</label>
+              <span class="q-imageslider-circle s-color-primary-5"></span>
+          {% elif loop.last %}
+          <button type="button" class="q-imageslider-button q-imageslider-button--last">
+              <label class="q-imageslider-label s-color-gray-4">{{ image.label }}</label>
+              <span class="q-imageslider-circle s-color-gray-4"></span>
+          {% else %}
+          <button type="button" class="q-imageslider-button">
+              <label class="q-imageslider-label s-color-gray-4">{{ image.label }}</label>
+              <span class="q-imageslider-circle s-color-gray-4"></span>
+          {% endif %}
+          </button>
+        {% endfor %}
+    </div>
+  </div>
+  {% else %}
   <div class="s-input-switch">
       <input class="q-imageslider-switch" name="switch" type="checkbox" value="on"/>
       {% for image in item.images %}
       <label>{{ image.label }}</label>
       {% endfor %}
   </div>
+  {% endif %}
   <div>
       {% for image in item.images %}
         {% if loop.first %}
