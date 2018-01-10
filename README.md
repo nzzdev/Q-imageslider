@@ -7,6 +7,7 @@ Test it in the demo: https://q-demo.st.nzz.ch/
 
 ```bash
 $ npm install
+$ npm run build
 ```
 
 ## Development
