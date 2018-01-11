@@ -9,7 +9,7 @@ install:
 - npm install
 - npm install -g standard
 before_script:
-- DOCKER_IMAGE_NAME="q-infographic"
+- DOCKER_IMAGE_NAME="q-imageslider"
 - DOCKER_TAG=$TRAVIS_BRANCH
 script:
 - npm run build
