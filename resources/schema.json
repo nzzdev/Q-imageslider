@@ -20,11 +20,18 @@
         "minItems": 2,
         "properties": {
           "url": {
-            "type": "string",
+            "type": "object",
             "Q:type": "files",
             "Q:options": {
               "maxFiles": 1,
-              "acceptedFiles": "image/*"
+              "acceptedFiles": "image/*",
+              "fileProperties": {
+                "url": "url",
+                "key": "key",
+                "size": "size",
+                "width": "width",
+                "height": "height"
+              }
             }
           },
           "label": {
