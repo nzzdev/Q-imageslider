@@ -18,14 +18,14 @@
   display: flex;
   position: relative;
   flex-flow: row nowrap;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
 }
 
 .q-imageslider-button {
   display: flex;
   flex-flow: column nowrap;
-  align-items: center;
+  align-items: center !important;
   background-color: transparent;
   border-color: transparent;
   border: 0;
@@ -36,11 +36,11 @@
 }
 
 .q-imageslider-button--first {
-  align-items: flex-start;
+  align-items: flex-start !important;
 }
 
 .q-imageslider-button--last {
-  align-items: flex-end;
+  align-items: flex-end !important;
 }
 
 .q-imageslider-label {
