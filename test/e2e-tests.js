@@ -33,7 +33,7 @@ after(async () => {
   server = null
 })
 
-lab.experiment('basics', () => {
+lab.experiment('basic routes', () => {
   it('starts the server', () => {
     expect(server.info.created).to.be.a.number()
   })
@@ -45,45 +45,22 @@ lab.experiment('basics', () => {
 })
 
 lab.experiment('rendering-info', () => {
-  it('renderes correct markup', async () => {
-    const fixture = fs.readFileSync(`${__dirname}/../resources/fixtures/data/basic.json`, { encoding: 'utf-8' })
-    const res = await server.inject({
-      url: '/rendering-info/web',
-      method: 'POST',
-      payload: {
-        item: JSON.parse(fixture),
-        toolRuntimeConfig: {}
-      }
-    })
-    expect(res.result.markup).to.be.equal('<h1>Title</h1><h2>Subtitle</h2><p>rendered by Q-imageslider')
-  })
+  const fixture = JSON.parse(fs.readFileSync(`${__dirname}/../resources/fixtures/data/two-images.json`, { encoding: 'utf-8' }))
 
-  it('returnes compiled stylesheet name', async () => {
-    const fixture = fs.readFileSync(`${__dirname}/../resources/fixtures/data/basic.json`, { encoding: 'utf-8' })
-    const res = await server.inject({
-      url: '/rendering-info/web',
+  it('returns 200 for /rendering-info/web', async () => {
+    const request = {
       method: 'POST',
+      url: '/rendering-info/web',
       payload: {
-        item: JSON.parse(fixture),
-        toolRuntimeConfig: {}
-      }
-    })
-    expect(res.result.stylesheets[0].name).to.be.equal('default.546218a5.css')
-  })
-})
+        item: fixture,
+        toolRuntimeConfig: {
+          displayOptions: {
 
-lab.experiment('assets', () => {
-  it('returnes stylesheet', async () => {
-    const fixture = fs.readFileSync(`${__dirname}/../resources/fixtures/data/basic.json`, { encoding: 'utf-8' })
-    const res = await server.inject({
-      url: '/rendering-info/web',
-      method: 'POST',
-      payload: {
-        item: JSON.parse(fixture),
-        toolRuntimeConfig: {}
+          }
+        }
       }
-    })
-    const stylesheetRes = await server.inject(`/stylesheet/${res.result.stylesheets[0].name}`)
-    expect(stylesheetRes.result).to.be.equal('h1{color:purple}')
+    }
+    const response = await server.inject(request)
+    expect(response.statusCode).to.be.equal(200)
   })
 })
