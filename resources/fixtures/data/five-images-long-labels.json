@@ -32,5 +32,15 @@
       "caption": "Ansichtskarte, versendet 1965: Der Verkehr auf dem Zürcher Bahnhofplatz wird von Hand geregelt.",
       "credit": "(Bild: Simon Tanner / NZZ)"
     }
-  ]
+  ],
+  "sources": [
+    {
+      "text": "Zürcher Verkehrsverbund",
+      "link": {
+        "url": "https://www.zvv.ch/",
+        "isValid": true
+      }
+    }
+  ],
+  "notes": "Anmerkung"
 }
