@@ -19,7 +19,7 @@
         "type": "object",
         "minItems": 2,
         "properties": {
-          "url": {
+          "file": {
             "type": "object",
             "Q:type": "files",
             "Q:options": {
@@ -48,7 +48,6 @@
           }
         },
         "required": [
-          "url",
           "label",
           "caption",
           "credit"
