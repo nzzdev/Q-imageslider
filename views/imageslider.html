@@ -37,7 +37,7 @@
       {%- else %}
         <div style="display: none" class="q-imageslider-image">
       {%- endif %}
-          <div style="position:relative; padding-bottom: 62.6%">
+          <div class="q-imageslider-image-container" style="position:relative; padding-bottom: {{ ((image.file.height / image.file.width) * 100) | round(2) }}%">
             <img src="{{ image.file.url }}" style="position:absolute; display:block; width:100%"/>
           </div>
           <p class="q-imageslider-caption s-font-note s-font-note--light">
