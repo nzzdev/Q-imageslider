@@ -1,7 +1,7 @@
 # Q Imageslider
 
 Q Imageslider is one tool of the Q toolbox to compare images with eachother.
-Test it in the demo: https://q-demo.st.nzz.ch/
+Test it in the demo: https://editor.q.tools
 
 ## Installation
 

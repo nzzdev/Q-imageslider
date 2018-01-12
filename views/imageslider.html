@@ -3,40 +3,40 @@
   {% if multiple %}
   <div>
     <div class="q-imageslider-button-container">
-        {% for image in item.images %}
-          {% if loop.first %}
+        {%- for image in item.images %}
+          {%- if loop.first %}
           <button type="button" class="q-imageslider-button q-imageslider-button--first">
               <label class="q-imageslider-label s-font-sans s-font-note s-color-gray-9">{{ image.label }}</label>
               <span class="q-imageslider-circle s-color-primary-5"></span>
-          {% elif loop.last %}
+          {%- elif loop.last %}
           <button type="button" class="q-imageslider-button q-imageslider-button--last">
               <label class="q-imageslider-label s-font-sans s-font-note s-color-gray-4">{{ image.label }}</label>
               <span class="q-imageslider-circle s-color-gray-4"></span>
-          {% else %}
+          {%- else %}
           <button type="button" class="q-imageslider-button">
               <label class="q-imageslider-label s-font-sans s-font-note s-color-gray-4">{{ image.label }}</label>
               <span class="q-imageslider-circle s-color-gray-4"></span>
-          {% endif %}
+          {%- endif %}
           </button>
-        {% endfor %}
+        {%- endfor %}
     </div>
     <div class="q-imageslider-bar s-color-gray-4"></div>
   </div>
   {% else %}
   <div class="s-input-switch">
       <input class="q-imageslider-switch" name="switch" type="checkbox" value="on"/>
-      {% for image in item.images %}
+      {%- for image in item.images %}
       <label>{{ image.label }}</label>
-      {% endfor %}
+      {%- endfor %}
   </div>
   {% endif %}
   <div>
-    {% for image in item.images %}
-      {% if loop.first %}
+    {%- for image in item.images %}
+      {%- if loop.first %}
         <div style="display: block" class="q-imageslider-image">
-      {% else %}
+      {%- else %}
         <div style="display: none" class="q-imageslider-image">
-      {% endif %}
+      {%- endif %}
           <div style="position:relative; padding-bottom: 66.6%">
             <img src="{{ image.file.url }}" style="position:absolute; display:block; width:100%"/>
           </div>
@@ -45,7 +45,7 @@
             <span>{{ image.credit }}</span>
           </p>
         </div>
-    {% endfor %}
+    {%- endfor %}
         </div>
   </div>
   {%- include "./footer.html" %}
