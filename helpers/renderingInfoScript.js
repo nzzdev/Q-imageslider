@@ -1,4 +1,4 @@
-function getScript (id, imageCount) {
+function getScript(id, imageCount) {
   const twoImagesScript = `
     function ${id}_initImageslider() {
       var sliderSwitch = document.querySelector(".q-imageslider-switch");
@@ -18,7 +18,7 @@ function getScript (id, imageCount) {
       });
     };
     ${id}_initImageslider();
-    `
+    `;
 
   const multipleImagesScript = `
   function ${id}_initImageslider() {
@@ -54,10 +54,10 @@ function getScript (id, imageCount) {
     });
   }
   ${id}_initImageslider();
-  `
-  return (imageCount > 2) ? multipleImagesScript : twoImagesScript
+  `;
+  return imageCount > 2 ? multipleImagesScript : twoImagesScript;
 }
 
 module.exports = {
   getScript: getScript
-}
+};
