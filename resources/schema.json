@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
-  "title": "Bildslider",
+  "title": "Bildvergleich",
   "properties": {
     "title": {
       "title": "Titel",
@@ -39,11 +39,11 @@
             "type": "string"
           },
           "caption": {
-            "title": "Legende",
+            "title": "Bildlegende",
             "type": "string"
           },
           "credit": {
-            "title": "Credit",
+            "title": "Bildcredit",
             "type": "string"
           }
         },
