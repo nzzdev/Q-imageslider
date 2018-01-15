@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
-  "title": "Q-imageslider",
+  "title": "Bildslider",
   "properties": {
     "title": {
       "title": "Titel",
@@ -10,9 +10,86 @@
     "subtitle": {
       "title": "Untertitel",
       "type": "string"
+    },
+    "images": {
+      "title": "Bilder",
+      "type": "array",
+      "items": {
+        "title": "Bild",
+        "type": "object",
+        "minItems": 2,
+        "properties": {
+          "file": {
+            "type": "object",
+            "Q:type": "files",
+            "Q:options": {
+              "maxFiles": 1,
+              "acceptedFiles": "image/*",
+              "fileProperties": {
+                "url": "url",
+                "key": "key",
+                "size": "size",
+                "width": "width",
+                "height": "height"
+              }
+            }
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "caption": {
+            "title": "Legende",
+            "type": "string"
+          },
+          "credit": {
+            "title": "Credit",
+            "type": "string"
+          }
+        },
+        "required": [
+          "label",
+          "caption",
+          "credit"
+        ]
+      }
+    },
+    "sources": {
+      "title": "Quellen",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "title": "Quelle",
+        "properties": {
+          "text": {
+            "title": "Text",
+            "type": "string"
+          },
+          "link": {
+            "Q:type": "link",
+            "title": "Link",
+            "type": "object",
+            "properties": {
+              "url": {
+                "title": "Url",
+                "type": "string"
+              },
+              "isValid": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
+        "required": ["text"]
+      }
+    },
+    "notes": {
+      "title": "Anmerkungen",
+      "type": "string"
     }
   },
   "required": [
-    "title"
+    "title",
+    "images"
   ]
 }
