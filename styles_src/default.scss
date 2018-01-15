@@ -33,14 +33,22 @@
   margin: 0;
   cursor: pointer;
   z-index: 2;
-}
 
-.q-imageslider-button--first {
-  align-items: flex-start !important;
-}
+  &:first-child {
+    align-items: flex-start !important;
 
-.q-imageslider-button--last {
-  align-items: flex-end !important;
+    .q-imageslider-label {
+      text-align: left;
+    }
+  }
+
+  &:last-child {
+    align-items: flex-end !important;
+
+    .q-imageslider-label {
+      text-align: right;
+    }
+  }
 }
 
 .q-imageslider-label {
