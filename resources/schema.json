@@ -14,10 +14,10 @@
     "images": {
       "title": "Bilder",
       "type": "array",
+      "minItems": 2,
       "items": {
         "title": "Bild",
         "type": "object",
-        "minItems": 2,
         "properties": {
           "file": {
             "type": "object",
