@@ -1,0 +1,25 @@
+{
+  "title": "FIXTURE: two images - only required properties",
+  "images": [
+    {
+      "file": {
+        "url": "https://img.nzz.ch/s=w540,pd1/o=75/http://nzz-img.s3.amazonaws.com/2017/8/10/98ee4bb0-f8a1-40be-94f4-5a448fe63082.jpeg",
+        "key": "",
+        "size": "37.9",
+        "width": "540",
+        "height": "338"
+      },
+      "label": "1965"
+    },
+    {
+      "file": {
+        "url": "https://img.nzz.ch/s=w540,pd1/o=75/http://nzz-img.s3.amazonaws.com/2017/8/10/e9930834-1b84-4186-80c4-23ba7512519a.jpeg",
+        "key": "",
+        "size": "37.9",
+        "width": "540",
+        "height": "338"
+      },
+      "label": "2017"
+    }
+  ]
+}

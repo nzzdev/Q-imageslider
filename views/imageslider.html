@@ -32,7 +32,13 @@
           </div>
           <p class="q-imageslider-caption s-font-note s-font-note--light">
             {{ image.caption }}
-            <span>{{ image.credit }}</span>
+            {%- if image.credit.text %}
+              {%- if image.credit.link.url %}
+              <span>(Bild: <a href="{{ image.credit.link.url }}" target="blank" rel="noopener noreferrer">{{ image.credit.text }}</a>)</span>
+              {%- else %}
+              <span>(Bild: {{ image.credit.text }})</span>
+              {%- endif %}
+            {%- endif %}
           </p>
         </div>
     {%- endfor %}

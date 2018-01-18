@@ -5,8 +5,10 @@ const fixtureDataDirectory = "../../resources/fixtures/data";
 const fixtureData = [
   require(`${fixtureDataDirectory}/two-images.json`),
   require(`${fixtureDataDirectory}/two-images-long-labels.json`),
+  require(`${fixtureDataDirectory}/two-images-only-required-properties.json`),
   require(`${fixtureDataDirectory}/three-images.json`),
   require(`${fixtureDataDirectory}/three-images-long-labels.json`),
+  require(`${fixtureDataDirectory}/three-images-only-required-properties.json`),
   require(`${fixtureDataDirectory}/five-images.json`),
   require(`${fixtureDataDirectory}/five-images-long-labels.json`),
   require(`${fixtureDataDirectory}/ten-images.json`),
