@@ -5,7 +5,7 @@ function getStartImageEnum(item) {
   if (item.images.length < 2) {
     return [0];
   }
-  // constructs an array like [0,1,2,3,...] with as many indexes as there are data columns
+  // constructs an array like [0,1,2,3,...] with as many indexes as there are images
   return [].concat(
     Array.from(new Array(item.images.length), (val, index) => index)
   );
@@ -16,13 +16,12 @@ function getStartImageEnumTitles(item) {
     return ["1. Bild"];
   }
 
-  let titles = [];
-  item.images.forEach((image, index) => {
-    return image.label
-      ? titles.push(image.label)
-      : titles.push(index + 1 + ". Bild");
+  return item.images.map((image, index) => {
+    if (image.label) {
+      return image.label;
+    }
+    return `${index + 1}. Bild`;
   });
-  return titles;
 }
 
 module.exports = {
