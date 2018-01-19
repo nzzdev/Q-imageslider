@@ -3,14 +3,16 @@
 }
 
 .q-imageslider-image--is-visible {
-  display: block !important;
+  opacity: 1 !important;
+  transition: opacity 0.5s linear;
 }
 
 .q-imageslider-image--is-hidden {
-  display: none !important;
+  opacity: 0 !important;
+  transition: opacity 0.5s linear;
 }
 
-.q-imageslider-image-container {
+.q-imageslider-container {
   margin-top: 10px;
 }
 

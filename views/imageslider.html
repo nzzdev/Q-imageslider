@@ -20,23 +20,21 @@
       {%- endfor %}
   </div>
   {% endif %}
-  <div class="q-imageslider-image-container">
-    {%- for image in item.images %}
-      {%- if loop.first %}
-        <div style="display: block" class="q-imageslider-image">
-      {%- else %}
-        <div style="display: none" class="q-imageslider-image">
-      {%- endif %}
-          <div style="position:relative; padding-bottom: {{ ((image.file.height / image.file.width) * 100) | round(2) }}%">
-            <img src="{{ image.file.url }}" style="position:absolute; display:block; width:100%"/>
-          </div>
-          <p class="q-imageslider-caption s-font-note s-font-note--light">
-            {{ image.caption }}
-            <span>{{ image.credit }}</span>
-          </p>
-        </div>
-    {%- endfor %}
-        </div>
+  <div class="q-imageslider-container">
+    <div class="q-imageslider-image-container" style="position:relative; padding-bottom: {{ ((item.images[0].file.height / item.images[0].file.width) * 100) | round(2) }}%">
+      {%- for image in item.images %}
+        {%- if loop.first %}
+        <img class="q-imageslider-image" src="{{ image.file.url }}" data-width="{{  image.file.width }}" data-height="{{  image.file.height }}" data-caption="{{ image.caption }}" data-credit="{{ image.credit }}" style="position:absolute; display:block; width:100%; opacity: 1;"/>
+        {%- else %}
+        <img class="q-imageslider-image" src="{{ image.file.url }}" data-width="{{  image.file.width }}" data-height="{{  image.file.height }}" data-caption="{{ image.caption }}" data-credit="{{ image.credit }}" style="position:absolute; display:block; width:100%; opacity: 0;"/>
+        {%- endif %}
+      {%- endfor %}
+    </div>
+    <p class="q-imageslider-caption s-font-note s-font-note--light">
+      {{ item.images[0].caption }}
+      <span class="q-imageslider-credit">{{ item.images[0].credit }}</span>
+    </p>
   </div>
+</div>
   {%- include "./footer.html" %}
 </div>
