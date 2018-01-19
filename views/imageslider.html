@@ -1,38 +1,56 @@
 <div class="s-q-item q-imageslider" style="opacity: 0;" id="{{ id }}">
   {%- include "./header.html" %}
-  {% if multiple %}
+  {% if item.images.length > 2 %}
   <div>
     <div class="q-imageslider-button-container">
-        {%- for image in item.images %}
-          <button type="button" class="q-imageslider-button">
-              <label class="q-imageslider-label s-font-sans s-font-note s-color-gray-4">{{ image.label }}</label>
-              <span class="q-imageslider-circle s-color-gray-4"></span>
-          </button>
-        {%- endfor %}
+      {%- for image in item.images %}
+      <button type="button" class="q-imageslider-button">
+        {%- if loop.index0 == item.options.startImage %}
+            <label class="q-imageslider-label s-font-sans s-font-note s-color-gray-9">{{ image.label }}</label>
+            <span class="q-imageslider-circle s-color-primary-5"></span>
+        {%- else %}
+            <label class="q-imageslider-label s-font-sans s-font-note s-color-gray-4">{{ image.label }}</label>
+            <span class="q-imageslider-circle s-color-gray-4"></span>
+        {%- endif %}
+      </button>
+      {%- endfor %}
     </div>
     <div class="q-imageslider-bar s-color-gray-4"></div>
   </div>
   {% else %}
   <div class="s-input-switch s-input-switch--centered">
-      <input class="q-imageslider-switch" name="switch" type="checkbox" value="on"/>
+      {%- if item.options.startImage === 0 %}
+      <input class="q-imageslider-switch" type="checkbox"/>
+      {%- else %}
+      <input class="q-imageslider-switch" type="checkbox" checked/>
+      {%- endif %}
       {%- for image in item.images %}
       <label>{{ image.label }}</label>
       {%- endfor %}
   </div>
   {% endif %}
   <div class="q-imageslider-container">
-    <div class="q-imageslider-image-container" style="position:relative; padding-bottom: {{ ((item.images[0].file.height / item.images[0].file.width) * 100) | round(2) }}%">
+    {% set startImage = item.images[item.options.startImage] %}
+    <div class="q-imageslider-image-container" style="position:relative; padding-bottom: {{ ((startImage.file.height / startImage.file.width) * 100) | round(2) }}%">
       {%- for image in item.images %}
-        {%- if loop.first %}
-        <img class="q-imageslider-image" src="{{ image.file.url }}" data-width="{{  image.file.width }}" data-height="{{  image.file.height }}" data-caption="{{ image.caption }}" data-credit="{{ image.credit }}" style="position:absolute; display:block; width:100%; opacity: 1;"/>
+        {%- if loop.index0 === item.options.startImage %}
+        <img class="q-imageslider-image" src="{{ image.file.url }}" data-imageIndex="{{ loop.index0 }}" style="position:absolute; display:block; width:100%; opacity: 1;"/>
         {%- else %}
-        <img class="q-imageslider-image" src="{{ image.file.url }}" data-width="{{  image.file.width }}" data-height="{{  image.file.height }}" data-caption="{{ image.caption }}" data-credit="{{ image.credit }}" style="position:absolute; display:block; width:100%; opacity: 0;"/>
+        <img class="q-imageslider-image" src="{{ image.file.url }}" data-imageIndex="{{ loop.index0 }}" style="position:absolute; display:block; width:100%; opacity: 0;"/>
         {%- endif %}
       {%- endfor %}
     </div>
     <p class="q-imageslider-caption s-font-note s-font-note--light">
-      {{ item.images[0].caption }}
-      <span class="q-imageslider-credit">{{ item.images[0].credit }}</span>
+      {{ startImage.caption }}
+      <span>
+      {%- if startImage.credit.text %}
+        {%- if startImage.credit.link.url and startImage.credit.link.isValid %}
+        (Bild: <a href="{{ startImage.credit.link.url }}" target="blank" rel="noopener noreferrer">{{ startImage.credit.text }}</a>)
+        {%- else %}
+        (Bild: {{ startImage.credit.text }})
+        {%- endif %}
+      {%- endif %}
+      </span>
     </p>
   </div>
 </div>

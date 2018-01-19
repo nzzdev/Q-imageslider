@@ -43,51 +43,54 @@
             "type": "string"
           },
           "credit": {
-            "title": "Bildcredit",
-            "type": "string"
-          }
-        },
-        "required": [
-          "label"
-        ]
-      }
-    },
-    "sources": {
-      "title": "Quellen",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "title": "Quelle",
-        "properties": {
-          "text": {
-            "title": "Text",
-            "type": "string"
-          },
-          "link": {
-            "Q:type": "link",
-            "title": "Link",
             "type": "object",
+            "title": "Bildcredit",
             "properties": {
-              "url": {
-                "title": "Url",
+              "text": {
+                "title": "Text",
                 "type": "string"
               },
-              "isValid": {
-                "type": "boolean"
+              "link": {
+                "Q:type": "link",
+                "title": "Link",
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "title": "Url",
+                    "type": "string"
+                  },
+                  "isValid": {
+                    "type": "boolean"
+                  }
+                }
               }
             }
           }
         },
-        "required": ["text"]
+        "required": ["file", "label"]
       }
     },
     "notes": {
       "title": "Anmerkungen",
       "type": "string"
+    },
+    "options": {
+      "title": "Optionen",
+      "type": "object",
+      "properties": {
+        "startImage": {
+          "title": "Startbild",
+          "type": "number",
+          "Q:options": {
+            "dynamicEnum": {
+              "type": "ToolEndpoint",
+              "withData": true,
+              "endpoint": "dynamic-enum/startImage"
+            }
+          }
+        }
+      }
     }
   },
-  "required": [
-    "title",
-    "images"
-  ]
+  "required": ["title", "images"]
 }

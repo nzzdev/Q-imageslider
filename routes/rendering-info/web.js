@@ -65,8 +65,7 @@ module.exports = {
       displayOptions: request.payload.toolRuntimeConfig.displayOptions || {},
       id: `q_imageslider_${request.query._id}_${Math.floor(
         Math.random() * 100000
-      )}`.replace(/-/g, ""),
-      multiple: item.images.length > 2
+      )}`.replace(/-/g, "")
     };
 
     const renderingInfo = {
@@ -78,7 +77,7 @@ module.exports = {
       ],
       scripts: [
         {
-          content: getScript(context.id, item.images.length)
+          content: getScript(context.id, context.item)
         }
       ],
       markup: nunjucksEnv.render(viewsDir + "imageslider.html", context)

@@ -1,39 +1,65 @@
-function getScript(id, imageCount) {
+function getScript(id, item) {
   const twoImagesScript = `
   function ${id}_initImageslider() {
+    document._${id}_item = ${JSON.stringify(item)};
     var sliderSwitch = document.querySelector(".q-imageslider-switch");
     var sliderImages = document.querySelectorAll(".q-imageslider-image");
+
     sliderSwitch.addEventListener("change", function() {
       if(this.checked) {
+        setVisibility(1);
         sliderImages[0].classList.add("q-imageslider-image--is-hidden");
         sliderImages[0].classList.remove("q-imageslider-image--is-visible");
         sliderImages[1].classList.add("q-imageslider-image--is-visible");
         sliderImages[1].classList.remove("q-imageslider-image--is-hidden");
-        var caption = sliderImages[1].getAttribute("data-caption") + " <span>" + sliderImages[1].getAttribute("data-credit") + "</span>";
-        document.querySelector(".q-imageslider-caption").innerHTML = caption;
+        var index = sliderImages[1].getAttribute("data-imageIndex");
+        var image = document._${id}_item.images[index];
+        var captionElement = document.querySelector(".q-imageslider-caption");
+        captionElement.childNodes[0].nodeValue = image.caption;
+        captionElement.childNodes[1].innerHTML = "";
+        if(image.credit.text) {
+          if(image.credit.link.url && image.credit.link.isValid) {
+            captionElement.childNodes[1].innerHTML = "<span>(Bild: <a href='" + image.credit.link.url + "' target='blank' rel='noopener noreferrer'>" + image.credit.text + "</a>)</span>";
+          } else {
+            captionElement.childNodes[1].innerHTML = "<span>(Bild: " + image.credit.text + ")</span>";
+          }
+        }
         var width = sliderImages[1].getAttribute("data-width");
         var height = sliderImages[1].getAttribute("data-height");
         var imageRatio = (height / width) * 100;
-        sliderImages[1].parent.style.paddingBottom = Math.round(imageRatio * 100) / 100 + "%";
+        sliderImages[1].parentNode.style.paddingBottom = Math.round(imageRatio * 100) / 100 + "%";
       } else {
         sliderImages[0].classList.add("q-imageslider-image--is-visible");
         sliderImages[0].classList.remove("q-imageslider-image--is-hidden");
         sliderImages[1].classList.add("q-imageslider-image--is-hidden");
         sliderImages[1].classList.remove("q-imageslider-image--is-visible");
-        var caption = sliderImages[0].getAttribute("data-caption") + " <span>" + sliderImages[0].getAttribute("data-credit") + "</span>";
-        document.querySelector(".q-imageslider-caption").innerHTML = caption;
+        var index = sliderImages[0].getAttribute("data-imageIndex");
+        var image = document._${id}_item.images[index];
+        var captionElement = document.querySelector(".q-imageslider-caption");
+        captionElement.childNodes[0].nodeValue = image.caption;
+        captionElement.childNodes[1].innerHTML = "";
+        if(image.credit.text) {
+          if(image.credit.link.url && image.credit.link.isValid) {
+            captionElement.childNodes[1].innerHTML = "<span>(Bild: <a href='" + image.credit.link.url + "' target='blank' rel='noopener noreferrer'>" + image.credit.text + "</a>)</span>";
+          } else {
+            captionElement.childNodes[1].innerHTML = "<span>(Bild: " + image.credit.text + ")</span>";
+          }
+        }
         var width = sliderImages[0].getAttribute("data-width");
         var height = sliderImages[0].getAttribute("data-height");
         var imageRatio = (height / width) * 100;
         sliderImages[0].parentNode.style.paddingBottom = Math.round(imageRatio * 100) / 100 + "%";
       }
     });
+
+    function()
   };
   ${id}_initImageslider();
   `;
 
   const multipleImagesScript = `
   function ${id}_initImageslider() {
+    document._${id}_item = ${JSON.stringify(item)};
     var sliderButtons = document.querySelectorAll(".q-imageslider-button");
     var sliderImages = document.querySelectorAll(".q-imageslider-image");
     sliderButtons.forEach(function(sliderButton, buttonIndex) {
@@ -57,8 +83,18 @@ function getScript(id, imageCount) {
           if(buttonIndex === imageIndex) {
             sliderImage.classList.add("q-imageslider-image--is-visible");
             sliderImage.classList.remove("q-imageslider-image--is-hidden");
-            var caption = sliderImage.getAttribute("data-caption") + " <span>" + sliderImage.getAttribute("data-credit") + "</span>";
-            document.querySelector(".q-imageslider-caption").innerHTML = caption;
+            var index = sliderImage.getAttribute("data-imageIndex");
+            var image = document._${id}_item.images[index];
+            var captionElement = document.querySelector(".q-imageslider-caption");
+            captionElement.childNodes[0].nodeValue = image.caption;
+            captionElement.childNodes[1].innerHTML = "";
+            if(image.credit.text) {
+              if(image.credit.link.url && image.credit.link.isValid) {
+                captionElement.childNodes[1].innerHTML = "<span>(Bild: <a href='" + image.credit.link.url + "' target='blank' rel='noopener noreferrer'>" + image.credit.text + "</a>)</span>";
+              } else {
+                captionElement.childNodes[1].innerHTML = "<span>(Bild: " + image.credit.text + ")</span>";
+              }
+            }
             var width = sliderImage.getAttribute("data-width");
             var height = sliderImage.getAttribute("data-height");
             var imageRatio = (height / width) * 100;
@@ -73,7 +109,7 @@ function getScript(id, imageCount) {
   }
   ${id}_initImageslider();
   `;
-  return imageCount > 2 ? multipleImagesScript : twoImagesScript;
+  return item.images.length > 2 ? multipleImagesScript : twoImagesScript;
 }
 
 module.exports = {
