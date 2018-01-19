@@ -13,21 +13,21 @@
     <div class="q-imageslider-bar s-color-gray-4"></div>
   </div>
   {% else %}
-  <div class="s-input-switch">
+  <div class="s-input-switch s-input-switch--centered">
       <input class="q-imageslider-switch" name="switch" type="checkbox" value="on"/>
       {%- for image in item.images %}
       <label>{{ image.label }}</label>
       {%- endfor %}
   </div>
   {% endif %}
-  <div>
+  <div class="q-imageslider-image-container">
     {%- for image in item.images %}
       {%- if loop.first %}
         <div style="display: block" class="q-imageslider-image">
       {%- else %}
         <div style="display: none" class="q-imageslider-image">
       {%- endif %}
-          <div class="q-imageslider-image-container" style="position:relative; padding-bottom: {{ ((image.file.height / image.file.width) * 100) | round(2) }}%">
+          <div style="position:relative; padding-bottom: {{ ((image.file.height / image.file.width) * 100) | round(2) }}%">
             <img src="{{ image.file.url }}" style="position:absolute; display:block; width:100%"/>
           </div>
           <p class="q-imageslider-caption s-font-note s-font-note--light">
