@@ -65,18 +65,33 @@
             "Q:type": "link",
             "title": "Link",
             "type": "object",
+            "title": "Bildcredit",
             "properties": {
-              "url": {
-                "title": "Url",
+              "text": {
+                "title": "Text",
                 "type": "string"
               },
-              "isValid": {
-                "type": "boolean"
+              "link": {
+                "Q:type": "link",
+                "title": "Link",
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "title": "Url",
+                    "type": "string"
+                  },
+                  "isValid": {
+                    "type": "boolean"
+                  }
+                }
               }
             }
           }
         },
-        "required": ["text"]
+        "required": [
+          "file",
+          "label"
+        ]
       }
     },
     "notes": {
