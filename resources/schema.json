@@ -47,9 +47,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "label"
-        ]
+        "required": ["label"]
       }
     },
     "sources": {
@@ -84,10 +82,24 @@
     "notes": {
       "title": "Anmerkungen",
       "type": "string"
+    },
+    "options": {
+      "title": "Optionen",
+      "type": "object",
+      "properties": {
+        "startImage": {
+          "title": "Startbild",
+          "type": "number",
+          "Q:options": {
+            "dynamicEnum": {
+              "type": "ToolEndpoint",
+              "withData": true,
+              "endpoint": "dynamic-enum/startImage"
+            }
+          }
+        }
+      }
     }
   },
-  "required": [
-    "title",
-    "images"
-  ]
+  "required": ["title", "images"]
 }
