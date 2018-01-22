@@ -44,5 +44,8 @@
       }
     }
   ],
-  "notes": "Anmerkung"
+  "notes": "Anmerkung",
+  "options": {
+    "startImage": 0
+  }
 }

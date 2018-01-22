@@ -1,17 +1,20 @@
 {
   "title": "FIXTURE - three images - long labels",
-  "subtitle": "Die NZZ hat Ansichtskarten von anno dazumal denselben Perspektiven von heute gegenübergestellt. Manifest wurden landschaftlicher, klimatischer und wirtschaftlicher Wandel und Merkmale der Politik.",
+  "subtitle":
+    "Die NZZ hat Ansichtskarten von anno dazumal denselben Perspektiven von heute gegenübergestellt. Manifest wurden landschaftlicher, klimatischer und wirtschaftlicher Wandel und Merkmale der Politik.",
   "images": [
     {
       "file": {
-        "url": "https://img.nzz.ch/s=w540,pd1/o=75/http://nzz-img.s3.amazonaws.com/2017/8/10/98ee4bb0-f8a1-40be-94f4-5a448fe63082.jpeg",
+        "url":
+          "https://img.nzz.ch/s=w540,pd1/o=75/http://nzz-img.s3.amazonaws.com/2017/8/10/98ee4bb0-f8a1-40be-94f4-5a448fe63082.jpeg",
         "key": "",
         "size": "37.9",
         "width": "540",
         "height": "338"
       },
       "label": "1965 - Es sind auch sehr sehr lange Labels möglich",
-      "caption": "Ansichtskarte, versendet 1965: Der Verkehr auf dem Zürcher Bahnhofplatz wird von Hand geregelt.",
+      "caption":
+        "Ansichtskarte, versendet 1965: Der Verkehr auf dem Zürcher Bahnhofplatz wird von Hand geregelt.",
       "credit": {
         "text": "Simon Tanner / NZZ",
         "link": {
@@ -22,14 +25,16 @@
     },
     {
       "file": {
-        "url": "https://img.nzz.ch/s=w540,pd1/o=75/http://nzz-img.s3.amazonaws.com/2017/8/10/e9930834-1b84-4186-80c4-23ba7512519a.jpeg",
+        "url":
+          "https://img.nzz.ch/s=w540,pd1/o=75/http://nzz-img.s3.amazonaws.com/2017/8/10/e9930834-1b84-4186-80c4-23ba7512519a.jpeg",
         "key": "",
         "size": "37.9",
         "width": "540",
         "height": "338"
       },
       "label": "1985",
-      "caption": "Das heutige Bild ist ähnlich. Grundlegend verändert hat sich der HB aber unter der Erde.",
+      "caption":
+        "Das heutige Bild ist ähnlich. Grundlegend verändert hat sich der HB aber unter der Erde.",
       "credit": {
         "text": "Simon Tanner / NZZ",
         "link": {
@@ -40,14 +45,16 @@
     },
     {
       "file": {
-        "url": "https://img.nzz.ch/s=w540,pd1/o=75/http://nzz-img.s3.amazonaws.com/2017/8/10/98ee4bb0-f8a1-40be-94f4-5a448fe63082.jpeg",
+        "url":
+          "https://img.nzz.ch/s=w540,pd1/o=75/http://nzz-img.s3.amazonaws.com/2017/8/10/98ee4bb0-f8a1-40be-94f4-5a448fe63082.jpeg",
         "key": "",
         "size": "37.9",
         "width": "540",
         "height": "338"
       },
       "label": "2017 - Es sind auch sehr sehr lange Labels möglich",
-      "caption": "Ansichtskarte, versendet 1965: Der Verkehr auf dem Zürcher Bahnhofplatz wird von Hand geregelt.",
+      "caption":
+        "Ansichtskarte, versendet 1965: Der Verkehr auf dem Zürcher Bahnhofplatz wird von Hand geregelt.",
       "credit": {
         "text": "Simon Tanner / NZZ",
         "link": {
@@ -57,5 +64,8 @@
       }
     }
   ],
-  "notes": "Anmerkung"
+  "notes": "Anmerkung",
+  "options": {
+    "startImage": 0
+  }
 }
