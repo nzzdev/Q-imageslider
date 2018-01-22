@@ -14,10 +14,10 @@ function getScript(id, item) {
     var captionElement = document.querySelector(".q-imageslider-caption");
     captionElement.childNodes[0].nodeValue = image.caption;
     captionElement.childNodes[1].innerHTML = "";
-    if(image.credit.text) {
+    if(image.credit) {
       if(image.credit.link.url && image.credit.link.isValid) {
         captionElement.childNodes[1].innerHTML = " (Bild: <a href='" + image.credit.link.url + "' target='blank' rel='noopener noreferrer'>" + image.credit.text + "</a>)";
-      } else {
+      } else if(image.credit.text) {
         captionElement.childNodes[1].innerHTML = " (Bild: " + image.credit.text + ")";
       }
     }

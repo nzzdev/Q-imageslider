@@ -65,7 +65,9 @@ module.exports = {
       displayOptions: request.payload.toolRuntimeConfig.displayOptions || {},
       id: `q_imageslider_${request.query._id}_${Math.floor(
         Math.random() * 100000
-      )}`.replace(/-/g, "")
+      )}`.replace(/-/g, ""),
+      imageServiceUrl:
+        process.env.IMAGE_SERVICE_URL || "http://img.st-staging.nzz.ch"
     };
 
     const renderingInfo = {
