@@ -19,14 +19,14 @@
   </div>
   {% else %}
   <div class="s-input-switch s-input-switch--centered">
-      {%- if item.options.startImage === 0 %}
-      <input class="q-imageslider-switch" type="checkbox"/>
-      {%- else %}
-      <input class="q-imageslider-switch" type="checkbox" checked/>
-      {%- endif %}
-      {%- for image in item.images %}
-      <label>{{ image.label }}</label>
-      {%- endfor %}
+    {%- if item.options.startImage === 0 %}
+    <input class="q-imageslider-switch" type="checkbox"/>
+    {%- else %}
+    <input class="q-imageslider-switch" type="checkbox" checked/>
+    {%- endif %}
+    {%- for image in item.images %}
+    <label>{{ image.label }}</label>
+    {%- endfor %}
   </div>
   {% endif %}
   <div class="q-imageslider-container">
