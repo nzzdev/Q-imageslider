@@ -2,16 +2,18 @@
   opacity: 1 !important;
 }
 
-.q-imageslider__subtitle {
-  margin-bottom: 12px;
-}
-
 .q-imageslider-image--is-visible {
-  display: block !important;
+  opacity: 1 !important;
+  transition: opacity 350ms linear;
 }
 
 .q-imageslider-image--is-hidden {
-  display: none !important;
+  opacity: 0 !important;
+  transition: opacity 350ms linear;
+}
+
+.q-imageslider-container {
+  margin-top: 10px;
 }
 
 .q-imageslider-button-container {
@@ -63,12 +65,17 @@
   cursor: pointer;
 }
 
+.q-imageslider-label-text {
+  transition: color 300ms ease-in;
+}
+
 .q-imageslider-circle {
   height: 20px;
   width: 20px;
   border-radius: 50%;
   border: 1px solid currentColor;
   background-color: currentColor;
+  transition: color 300ms ease-in;
 }
 
 .q-imageslider-bar {
