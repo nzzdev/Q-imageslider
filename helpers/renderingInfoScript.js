@@ -37,16 +37,16 @@ function getScript(id, item) {
 
   const enableSliderButtonFunction = `
   function enableSliderButton(sliderButton) {
-    sliderButton.children[0].classList.add("s-color-gray-9");
-    sliderButton.children[0].classList.remove("s-color-gray-4");
+    sliderButton.children[0].children[0].classList.add("s-color-gray-9");
+    sliderButton.children[0].children[0].classList.remove("s-color-gray-4");
     sliderButton.children[1].classList.add("s-color-primary-5");
     sliderButton.children[1].classList.remove("s-color-gray-4");
   }`;
 
   const disableSliderButtonFunction = `
   function disableSliderButton(sliderButton) {
-    sliderButton.children[0].classList.add("s-color-gray-4");
-    sliderButton.children[0].classList.remove("s-color-gray-9");
+    sliderButton.children[0].children[0].classList.add("s-color-gray-4");
+    sliderButton.children[0].children[0].classList.remove("s-color-gray-9");
     sliderButton.children[1].classList.add("s-color-gray-4");
     sliderButton.children[1].classList.remove("s-color-primary-5");
   }`;
