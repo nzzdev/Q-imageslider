@@ -8,10 +8,10 @@ function getScript(id, item) {
   };`;
 
   const setCaptionFunction = `
-  function setCaption(sliderImage) {
+  function setCaption(imageSliderRootElement, sliderImage) {
     var index = sliderImage.getAttribute("data-imageIndex");
     var image = document._${id}_item.images[index];
-    var captionElement = document.querySelector(".q-imageslider-caption");
+    var captionElement = imageSliderRootElement.querySelector(".q-imageslider-caption");
     captionElement.childNodes[0].nodeValue = image.caption;
     captionElement.childNodes[1].innerHTML = "";
     if(image.credit) {
@@ -82,21 +82,21 @@ function getScript(id, item) {
     ${hideSliderImageFunction}
     ${fireTrackingEventFunction}
     ${trackImageSwitchFunction}
-    var imageSliderRootElement = document.querySelector(".q-imageslider");
-    var sliderSwitch = document.querySelector(".q-imageslider-switch");
-    var sliderImages = document.querySelectorAll(".q-imageslider-image");
+    var imageSliderRootElement = document.querySelector("#${id}");
+    var sliderSwitch = imageSliderRootElement.querySelector(".q-imageslider-switch");
+    var sliderImages = imageSliderRootElement.querySelectorAll(".q-imageslider-image");
 
     sliderSwitch.addEventListener("change", function() {
       if(this.checked) {
         hideSliderImage(sliderImages[0]);
         showSliderImage(sliderImages[1]);
-        setCaption(sliderImages[1]);
+        setCaption(imageSliderRootElement, sliderImages[1]);
         setPaddingBottom(sliderImages[1]);
         trackImageSwitch(imageSliderRootElement, 1);
       } else {
         hideSliderImage(sliderImages[1]);
         showSliderImage(sliderImages[0]);
-        setCaption(sliderImages[0]);
+        setCaption(imageSliderRootElement, sliderImages[0]);
         setPaddingBottom(sliderImages[0]);
         trackImageSwitch(imageSliderRootElement, 0);
       }
@@ -115,9 +115,9 @@ function getScript(id, item) {
     ${disableSliderButtonFunction}
     ${fireTrackingEventFunction}
     ${trackImageSwitchFunction}
-    var imageSliderRootElement = document.querySelector(".q-imageslider");
-    var sliderButtons = document.querySelectorAll(".q-imageslider-button");
-    var sliderImages = document.querySelectorAll(".q-imageslider-image");
+    var imageSliderRootElement = document.querySelector("#${id}");
+    var sliderButtons = imageSliderRootElement.querySelectorAll(".q-imageslider-button");
+    var sliderImages = imageSliderRootElement.querySelectorAll(".q-imageslider-image");
 
     sliderButtons.forEach(function(sliderButton, buttonIndex) {
       sliderButton.addEventListener("click", () => {
@@ -133,7 +133,7 @@ function getScript(id, item) {
         sliderImages.forEach(function(sliderImage, imageIndex) {
           if(buttonIndex === imageIndex) {
             showSliderImage(sliderImage);
-            setCaption(sliderImage);
+            setCaption(imageSliderRootElement, sliderImage);
             setPaddingBottom(sliderImage);
             trackImageSwitch(imageSliderRootElement, imageIndex);
           } else {
