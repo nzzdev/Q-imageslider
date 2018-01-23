@@ -12,10 +12,6 @@
   transition: opacity 350ms ease-out;
 }
 
-.q-imageslider-container {
-  margin-top: 10px;
-}
-
 .q-imageslider-button-container {
   display: flex;
   position: relative;
@@ -90,4 +86,8 @@
 .q-imageslider-caption {
   margin-top: 8px;
   margin-bottom: 0;
+}
+
+.s-input-switch {
+  margin-bottom: 10px;
 }
