@@ -66,8 +66,7 @@ module.exports = {
       id: `q_imageslider_${request.query._id}_${Math.floor(
         Math.random() * 100000
       )}`.replace(/-/g, ""),
-      imageServiceUrl:
-        process.env.IMAGE_SERVICE_URL || "http://img.st-staging.nzz.ch"
+      imageServiceUrl: process.env.IMAGE_SERVICE_URL
     };
 
     const renderingInfo = {
