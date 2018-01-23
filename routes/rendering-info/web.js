@@ -59,6 +59,7 @@ module.exports = {
   },
   handler: async function(request, h) {
     const item = request.payload.item;
+    item.id = request.query._id;
 
     const context = {
       item: item,
@@ -70,7 +71,7 @@ module.exports = {
     };
 
     const renderingInfo = {
-      polyfills: ["Promise"],
+      polyfills: ["Promise", "CustomEvent"],
       stylesheets: [
         {
           name: styleHashMap["default"]

@@ -51,6 +51,28 @@ function getScript(id, item) {
     sliderButton.children[1].classList.remove("s-color-primary-5");
   }`;
 
+  const fireTrackingEventFunction = `
+  function fireTrackingEvent(imageSliderRootElement, itemId) {
+    // dispatch CustomEvent on next-image for tracking
+    // or anyone else interested in it
+    var imageSliderControlEvent = new CustomEvent('q-imageslider-next-image', {
+      bubbles: true,
+      detail: {
+        id: itemId
+      }
+    });
+    imageSliderRootElement.dispatchEvent(imageSliderControlEvent);
+  }`;
+
+  const trackImageSwitchFunction = `
+  function trackImageSwitch(imageSliderRootElement, imageIndex) {
+    // only fire image-switch tracking event if the image wasn't already visited before
+    if(!document._${id}_item.images[imageIndex].visited) {
+      fireTrackingEvent(imageSliderRootElement, document._${id}_item.id);
+    }
+    document._${id}_item.images[imageIndex].visited = true;
+  }`;
+
   const twoImagesScript = `
   function ${id}_initImageslider() {
     document._${id}_item = ${JSON.stringify(item)};
@@ -58,6 +80,9 @@ function getScript(id, item) {
     ${setCaptionFunction}
     ${showSliderImageFunction}
     ${hideSliderImageFunction}
+    ${fireTrackingEventFunction}
+    ${trackImageSwitchFunction}
+    var imageSliderRootElement = document.querySelector(".q-imageslider");
     var sliderSwitch = document.querySelector(".q-imageslider-switch");
     var sliderImages = document.querySelectorAll(".q-imageslider-image");
 
@@ -67,11 +92,13 @@ function getScript(id, item) {
         showSliderImage(sliderImages[1]);
         setCaption(sliderImages[1]);
         setPaddingBottom(sliderImages[1]);
+        trackImageSwitch(imageSliderRootElement, 1);
       } else {
         hideSliderImage(sliderImages[1]);
         showSliderImage(sliderImages[0]);
         setCaption(sliderImages[0]);
         setPaddingBottom(sliderImages[0]);
+        trackImageSwitch(imageSliderRootElement, 0);
       }
     });
   };
@@ -86,6 +113,9 @@ function getScript(id, item) {
     ${hideSliderImageFunction}
     ${enableSliderButtonFunction}
     ${disableSliderButtonFunction}
+    ${fireTrackingEventFunction}
+    ${trackImageSwitchFunction}
+    var imageSliderRootElement = document.querySelector(".q-imageslider");
     var sliderButtons = document.querySelectorAll(".q-imageslider-button");
     var sliderImages = document.querySelectorAll(".q-imageslider-image");
 
@@ -105,6 +135,7 @@ function getScript(id, item) {
             showSliderImage(sliderImage);
             setCaption(sliderImage);
             setPaddingBottom(sliderImage);
+            trackImageSwitch(imageSliderRootElement, imageIndex);
           } else {
             hideSliderImage(sliderImage);
           }
