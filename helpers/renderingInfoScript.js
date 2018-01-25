@@ -144,23 +144,25 @@ function getScript(id, item, imageServiceUrl) {
             }
           }
         }
-      }).then(function() {
-        document._${id}_item.width = imageSliderRootElement.getBoundingClientRect().width;
-        sliderImageElements.forEach(function(sliderImage) {
-          var imageIndex = sliderImage.getAttribute("data-imageIndex");
-          var startImage = sliderImage.getAttribute("data-startImage");
-          var opacityValue = imageIndex === startImage ? 1 : 0;
-          var imageUrl = sliderImage.getAttribute("data-imageUrl");
-          var innerHTMLPictureElement = '${elementMarkup}'.replace(/imageServiceUrl/g, '${imageServiceUrl}').replace(/measuredWidth/g, document._${id}_item.width).replace(/doubleWidth/g, 2 * document._${id}_item.width).replace(/index/g, imageIndex).replace(/imageUrl/g, imageUrl).replace(/opacityValue/g, opacityValue);
-          sliderImage.innerHTML = innerHTMLPictureElement;
-        });
-        if(multiple) {
-          addClickEventListenersMultiple(imageSliderRootElement);
-        } else {
-          addClickEventListeners(imageSliderRootElement);
-        }
-      });
+      })
     }
+
+    window.q_domready.then(function() {
+      document._${id}_item.width = imageSliderRootElement.getBoundingClientRect().width;
+      sliderImageElements.forEach(function(sliderImage) {
+        var imageIndex = sliderImage.getAttribute("data-imageIndex");
+        var startImage = sliderImage.getAttribute("data-startImage");
+        var opacityValue = imageIndex === startImage ? 1 : 0;
+        var imageUrl = sliderImage.getAttribute("data-imageUrl");
+        var innerHTMLPictureElement = '${elementMarkup}'.replace(/imageServiceUrl/g, '${imageServiceUrl}').replace(/measuredWidth/g, document._${id}_item.width).replace(/doubleWidth/g, 2 * document._${id}_item.width).replace(/index/g, imageIndex).replace(/imageUrl/g, imageUrl).replace(/opacityValue/g, opacityValue);
+        sliderImage.innerHTML = innerHTMLPictureElement;
+      });
+      if(multiple) {
+        addClickEventListenersMultiple(imageSliderRootElement);
+      } else {
+        addClickEventListeners(imageSliderRootElement);
+      }
+    });
   }`;
 
   const twoImagesScript = `
