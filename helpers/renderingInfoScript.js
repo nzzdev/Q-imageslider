@@ -126,8 +126,8 @@ function getScript(id, item, imageServiceUrl) {
   let elementMarkup =
     '<source type="image/webp" srcset="imageServiceUrl/resize?url=imageUrl&width=measuredWidth&nocrop=true&type=webp 1x, imageServiceUrl/resize?url=imageUrl&width=doubleWidth&nocrop=true&type=webp 2x"><source srcset="imageServiceUrl/resize?url=imageUrl&width=measuredWidth&nocrop=true 1x, imageServiceUrl/resize?url=imageUrl&width=doubleWidth&nocrop=true 2x"><img class="q-imageslider-image" data-imageIndex="index" style="position:absolute; display:block; width:100%; opacity: opacityValue;" src="imageServiceUrl/resize?url=imageUrl&width=measuredWidth&nocrop=true">';
 
-  const setDomReadyHandlerFunction = `
-  function setDomReadyHandler(imageSliderRootElement, sliderImageElements, multiple) {
+  const constructPictureElementFunction = `
+  function constructPictureElement(imageSliderRootElement, sliderImageElements, multiple) {
     if (!window.q_domready) {
       window.q_domready = new Promise((resolve) => {
         if (document.readyState && (document.readyState === 'interactive' || document.readyState === 'complete')) {
@@ -173,12 +173,13 @@ function getScript(id, item, imageServiceUrl) {
     ${fireTrackingEventFunction}
     ${trackImageSwitchFunction}
     ${addClickEventListenersFunction}
-    ${setDomReadyHandlerFunction}
+    ${constructPictureElementFunction}
 
     var imageSliderRootElement = document.querySelector("#${id}");
     var sliderImageElements = Array.prototype.slice.call(imageSliderRootElement.querySelector(".q-imageslider-image-container").children);
+    // Construct picture element on client side if not already done on server-side
     if(sliderImageElements[0].children.length === 0) {
-      setDomReadyHandler(imageSliderRootElement, sliderImageElements, false);
+      constructPictureElement(imageSliderRootElement, sliderImageElements, false);
     } else {
       addClickEventListeners(imageSliderRootElement);
     }
@@ -197,12 +198,13 @@ function getScript(id, item, imageServiceUrl) {
     ${fireTrackingEventFunction}
     ${trackImageSwitchFunction}
     ${addClickEventListenersMultipleFunction}
-    ${setDomReadyHandlerFunction}
+    ${constructPictureElementFunction}
 
     var imageSliderRootElement = document.querySelector("#${id}");
     var sliderImageElements = Array.prototype.slice.call(imageSliderRootElement.querySelector(".q-imageslider-image-container").children);
+    // Construct picture element on client side if not already done on server-side
     if(sliderImageElements[0].children.length === 0) {
-      setDomReadyHandler(imageSliderRootElement, sliderImageElements, true);
+      constructPictureElement(imageSliderRootElement, sliderImageElements, true);
     } else {
       addClickEventListenersMultiple(imageSliderRootElement);
     }
