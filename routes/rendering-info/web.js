@@ -6,6 +6,8 @@ const stylesDir = path.join(__dirname, "/../../styles/");
 const styleHashMap = require(path.join(stylesDir, "hashMap.json"));
 const viewsDir = path.join(__dirname, "/../../views/");
 const getScript = require("../../helpers/renderingInfoScript.js").getScript;
+const getExactPixelWidth = require("../../helpers/toolRuntimeConfig.js")
+  .getExactPixelWidth;
 
 // setup nunjucks environment
 const nunjucks = require("nunjucks");
@@ -70,6 +72,15 @@ module.exports = {
       imageServiceUrl: process.env.IMAGE_SERVICE_URL
     };
 
+    // if we have the width in toolRuntimeConfig.size
+    // we can use it to set the resolution of the image
+    const exactPixelWidth = getExactPixelWidth(
+      request.payload.toolRuntimeConfig
+    );
+    if (Number.isInteger(exactPixelWidth)) {
+      context.width = exactPixelWidth;
+    }
+
     const renderingInfo = {
       polyfills: ["Promise", "CustomEvent"],
       stylesheets: [
@@ -79,7 +90,7 @@ module.exports = {
       ],
       scripts: [
         {
-          content: getScript(context.id, context.item)
+          content: getScript(context.id, context.item, context.imageServiceUrl)
         }
       ],
       markup: nunjucksEnv.render(viewsDir + "imageslider.html", context)

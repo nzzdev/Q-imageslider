@@ -26,11 +26,16 @@
     {% set startImage = item.images[item.options.startImage] %}
     <div class="q-imageslider-image-container" style="position:relative; padding-bottom: {{ ((startImage.file.height / startImage.file.width) * 100) | round(2) }}%">
       {%- for image in item.images %}
+        {%- if width %}
         <picture>
-          <source type="image/webp" srcset="{{imageServiceUrl}}/resize?url={{ image.file.url | urlencode }}&width={{ image.file.width }}&nocrop=true&type=webp 1x, {{imageServiceUrl}}/resize?url={{ image.file.url | urlencode }}&width={{ image.file.width*2 }}&nocrop=true&type=webp 2x">
-          <source srcset="{{imageServiceUrl}}/resize?url={{ image.file.url | urlencode }}&width={{ image.file.width }}&nocrop=true 1x, {{imageServiceUrl}}/resize?url={{ image.file.url | urlencode }}&width={{ image.file.width*2 }}&nocrop=true 2x">
-          <img class="q-imageslider-image" data-imageIndex="{{ loop.index0 }}" style="position:absolute; display:block; width:100%; {% if loop.index0 === item.options.startImage %} opacity: 1; {% else %} opacity: 0; {% endif %}" src="{{imageServiceUrl}}/resize?url={{ image.file.url| urlencode }}&width={{ image.file.width }}&nocrop=true">
+            <source type="image/webp" srcset="{{imageServiceUrl}}/resize?url={{ image.file.url | urlencode }}&width={{ width }}&nocrop=true&type=webp 1x, {{imageServiceUrl}}/resize?url={{ image.file.url | urlencode }}&width={{ 2*width }}&nocrop=true&type=webp 2x">
+            <source srcset="{{imageServiceUrl}}/resize?url={{ image.file.url | urlencode }}&width={{ width }}&nocrop=true 1x, {{imageServiceUrl}}/resize?url={{ image.file.url | urlencode }}&width={{ 2*width }}&nocrop=true 2x">
+            <img class="q-imageslider-image" data-imageIndex="{{ loop.index0 }}" style="position:absolute; display:block; width:100%; {% if loop.index0 === item.options.startImage %} opacity: 1; {% else %} opacity: 0; {% endif %}" src="{{imageServiceUrl}}/resize?url={{ image.file.url| urlencode }}&width={{ width }}&nocrop=true">
         </picture>
+        {%- else %}
+        <picture data-imageIndex="{{ loop.index0 }}" data-startImage="{{item.options.startImage}}" data-imageUrl="{{image.file.url}}">
+        </picture>
+        {%- endif %}
       {%- endfor %}
     </div>
     <p class="q-imageslider-caption s-font-note s-font-note--light">
