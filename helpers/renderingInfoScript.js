@@ -99,7 +99,7 @@ function getScript(id, item, imageServiceUrl) {
     var sliderButtons = imageSliderRootElement.querySelectorAll(".q-imageslider-button");
     var sliderImages = imageSliderRootElement.querySelectorAll(".q-imageslider-image");
     sliderButtons.forEach(function(sliderButton, buttonIndex) {
-      sliderButton.addEventListener("click", () => {
+      sliderButton.addEventListener("click", function() {
         // Set selected state on sliderButtons
         sliderButtons.forEach(function(sliderButton, index) {
           if(buttonIndex === index) {
@@ -129,7 +129,7 @@ function getScript(id, item, imageServiceUrl) {
   const constructPictureElementFunction = `
   function constructPictureElement(imageSliderRootElement, sliderImageElements, multiple) {
     if (!window.q_domready) {
-      window.q_domready = new Promise((resolve) => {
+      window.q_domready = new Promise(function(resolve) {
         if (document.readyState && (document.readyState === 'interactive' || document.readyState === 'complete')) {
           resolve();
         } else {
@@ -138,7 +138,7 @@ function getScript(id, item, imageServiceUrl) {
             document.removeEventListener('DOMContentLoaded', onReady, true);
           }
           document.addEventListener('DOMContentLoaded', onReady, true);
-          document.onreadystatechange = () => {
+          document.onreadystatechange = function() {
             if (document.readyState === "interactive") {
               resolve();
             }
