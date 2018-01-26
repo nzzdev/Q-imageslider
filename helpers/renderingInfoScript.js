@@ -1,4 +1,4 @@
-function getScript(id, item) {
+function getScript(id, item, imageServiceUrl) {
   const setPaddingBottomFunction = `
   function setPaddingBottom(sliderImage) {
     var width = sliderImage.getAttribute("data-width");
@@ -8,16 +8,16 @@ function getScript(id, item) {
   };`;
 
   const setCaptionFunction = `
-  function setCaption(sliderImage) {
+  function setCaption(imageSliderRootElement, sliderImage) {
     var index = sliderImage.getAttribute("data-imageIndex");
     var image = document._${id}_item.images[index];
-    var captionElement = document.querySelector(".q-imageslider-caption");
+    var captionElement = imageSliderRootElement.querySelector(".q-imageslider-caption");
     captionElement.childNodes[0].nodeValue = image.caption;
     captionElement.childNodes[1].innerHTML = "";
-    if(image.credit.text) {
+    if(image.credit) {
       if(image.credit.link.url && image.credit.link.isValid) {
         captionElement.childNodes[1].innerHTML = " (Bild: <a href='" + image.credit.link.url + "' target='blank' rel='noopener noreferrer'>" + image.credit.text + "</a>)";
-      } else {
+      } else if(image.credit.text) {
         captionElement.childNodes[1].innerHTML = " (Bild: " + image.credit.text + ")";
       }
     }
@@ -51,46 +51,55 @@ function getScript(id, item) {
     sliderButton.children[1].classList.remove("s-color-primary-5");
   }`;
 
-  const twoImagesScript = `
-  function ${id}_initImageslider() {
-    document._${id}_item = ${JSON.stringify(item)};
-    ${setPaddingBottomFunction}
-    ${setCaptionFunction}
-    ${showSliderImageFunction}
-    ${hideSliderImageFunction}
-    var sliderSwitch = document.querySelector(".q-imageslider-switch");
-    var sliderImages = document.querySelectorAll(".q-imageslider-image");
+  const fireTrackingEventFunction = `
+  function fireTrackingEvent(imageSliderRootElement, itemId) {
+    // dispatch CustomEvent on next-image for tracking
+    // or anyone else interested in it
+    var imageSliderControlEvent = new CustomEvent('q-imageslider-next-image', {
+      bubbles: true,
+      detail: {
+        id: itemId
+      }
+    });
+    imageSliderRootElement.dispatchEvent(imageSliderControlEvent);
+  }`;
 
+  const trackImageSwitchFunction = `
+  function trackImageSwitch(imageSliderRootElement, imageIndex) {
+    // only fire image-switch tracking event if the image wasn't already visited before
+    if(!document._${id}_item.images[imageIndex].visited) {
+      fireTrackingEvent(imageSliderRootElement, document._${id}_item.id);
+    }
+    document._${id}_item.images[imageIndex].visited = true;
+  }`;
+
+  const addClickEventListenersFunction = `
+  function addClickEventListeners(imageSliderRootElement) {
+    var sliderSwitch = imageSliderRootElement.querySelector(".q-imageslider-switch");
+    var sliderImages = imageSliderRootElement.querySelectorAll(".q-imageslider-image");
     sliderSwitch.addEventListener("change", function() {
       if(this.checked) {
         hideSliderImage(sliderImages[0]);
         showSliderImage(sliderImages[1]);
-        setCaption(sliderImages[1]);
+        setCaption(imageSliderRootElement, sliderImages[1]);
         setPaddingBottom(sliderImages[1]);
+        trackImageSwitch(imageSliderRootElement, 1);
       } else {
         hideSliderImage(sliderImages[1]);
         showSliderImage(sliderImages[0]);
-        setCaption(sliderImages[0]);
+        setCaption(imageSliderRootElement, sliderImages[0]);
         setPaddingBottom(sliderImages[0]);
+        trackImageSwitch(imageSliderRootElement, 0);
       }
     });
-  };
-  ${id}_initImageslider();`;
+  }`;
 
-  const multipleImagesScript = `
-  function ${id}_initImageslider() {
-    document._${id}_item = ${JSON.stringify(item)};
-    ${setPaddingBottomFunction}
-    ${setCaptionFunction}
-    ${showSliderImageFunction}
-    ${hideSliderImageFunction}
-    ${enableSliderButtonFunction}
-    ${disableSliderButtonFunction}
-    var sliderButtons = document.querySelectorAll(".q-imageslider-button");
-    var sliderImages = document.querySelectorAll(".q-imageslider-image");
-
+  const addClickEventListenersMultipleFunction = `
+  function addClickEventListenersMultiple(imageSliderRootElement) {
+    var sliderButtons = imageSliderRootElement.querySelectorAll(".q-imageslider-button");
+    var sliderImages = imageSliderRootElement.querySelectorAll(".q-imageslider-image");
     sliderButtons.forEach(function(sliderButton, buttonIndex) {
-      sliderButton.addEventListener("click", () => {
+      sliderButton.addEventListener("click", function() {
         // Set selected state on sliderButtons
         sliderButtons.forEach(function(sliderButton, index) {
           if(buttonIndex === index) {
@@ -103,14 +112,104 @@ function getScript(id, item) {
         sliderImages.forEach(function(sliderImage, imageIndex) {
           if(buttonIndex === imageIndex) {
             showSliderImage(sliderImage);
-            setCaption(sliderImage);
+            setCaption(imageSliderRootElement, sliderImage);
             setPaddingBottom(sliderImage);
+            trackImageSwitch(imageSliderRootElement, imageIndex);
           } else {
             hideSliderImage(sliderImage);
           }
         });
       });
     });
+  }`;
+
+  let elementMarkup =
+    '<source type="image/webp" srcset="imageServiceUrl/resize?url=imageUrl&width=measuredWidth&nocrop=true&type=webp 1x, imageServiceUrl/resize?url=imageUrl&width=doubleWidth&nocrop=true&type=webp 2x"><source srcset="imageServiceUrl/resize?url=imageUrl&width=measuredWidth&nocrop=true 1x, imageServiceUrl/resize?url=imageUrl&width=doubleWidth&nocrop=true 2x"><img class="q-imageslider-image" data-imageIndex="index" style="position:absolute; display:block; width:100%; opacity: opacityValue;" src="imageServiceUrl/resize?url=imageUrl&width=measuredWidth&nocrop=true">';
+
+  const constructPictureElementFunction = `
+  function constructPictureElement(imageSliderRootElement, sliderImageElements, multiple) {
+    if (!window.q_domready) {
+      window.q_domready = new Promise(function(resolve) {
+        if (document.readyState && (document.readyState === 'interactive' || document.readyState === 'complete')) {
+          resolve();
+        } else {
+          function onReady() {
+            resolve();
+            document.removeEventListener('DOMContentLoaded', onReady, true);
+          }
+          document.addEventListener('DOMContentLoaded', onReady, true);
+          document.onreadystatechange = function() {
+            if (document.readyState === "interactive") {
+              resolve();
+            }
+          }
+        }
+      })
+    }
+
+    window.q_domready.then(function() {
+      document._${id}_item.width = imageSliderRootElement.getBoundingClientRect().width;
+      sliderImageElements.forEach(function(sliderImage) {
+        var imageIndex = sliderImage.getAttribute("data-imageIndex");
+        var startImage = sliderImage.getAttribute("data-startImage");
+        var opacityValue = imageIndex === startImage ? 1 : 0;
+        var imageUrl = sliderImage.getAttribute("data-imageUrl");
+        var innerHTMLPictureElement = '${elementMarkup}'.replace(/imageServiceUrl/g, '${imageServiceUrl}').replace(/measuredWidth/g, document._${id}_item.width).replace(/doubleWidth/g, 2 * document._${id}_item.width).replace(/index/g, imageIndex).replace(/imageUrl/g, imageUrl).replace(/opacityValue/g, opacityValue);
+        sliderImage.innerHTML = innerHTMLPictureElement;
+      });
+      if(multiple) {
+        addClickEventListenersMultiple(imageSliderRootElement);
+      } else {
+        addClickEventListeners(imageSliderRootElement);
+      }
+    });
+  }`;
+
+  const twoImagesScript = `
+  function ${id}_initImageslider() {
+    document._${id}_item = ${JSON.stringify(item)};
+    ${setPaddingBottomFunction}
+    ${setCaptionFunction}
+    ${showSliderImageFunction}
+    ${hideSliderImageFunction}
+    ${fireTrackingEventFunction}
+    ${trackImageSwitchFunction}
+    ${addClickEventListenersFunction}
+    ${constructPictureElementFunction}
+
+    var imageSliderRootElement = document.querySelector("#${id}");
+    var sliderImageElements = Array.prototype.slice.call(imageSliderRootElement.querySelector(".q-imageslider-image-container").children);
+    // Construct picture element on client side if not already done on server-side
+    if(sliderImageElements[0].children.length === 0) {
+      constructPictureElement(imageSliderRootElement, sliderImageElements, false);
+    } else {
+      addClickEventListeners(imageSliderRootElement);
+    }
+  };
+  ${id}_initImageslider();`;
+
+  const multipleImagesScript = `
+  function ${id}_initImageslider() {
+    document._${id}_item = ${JSON.stringify(item)};
+    ${setPaddingBottomFunction}
+    ${setCaptionFunction}
+    ${showSliderImageFunction}
+    ${hideSliderImageFunction}
+    ${enableSliderButtonFunction}
+    ${disableSliderButtonFunction}
+    ${fireTrackingEventFunction}
+    ${trackImageSwitchFunction}
+    ${addClickEventListenersMultipleFunction}
+    ${constructPictureElementFunction}
+
+    var imageSliderRootElement = document.querySelector("#${id}");
+    var sliderImageElements = Array.prototype.slice.call(imageSliderRootElement.querySelector(".q-imageslider-image-container").children);
+    // Construct picture element on client side if not already done on server-side
+    if(sliderImageElements[0].children.length === 0) {
+      constructPictureElement(imageSliderRootElement, sliderImageElements, true);
+    } else {
+      addClickEventListenersMultiple(imageSliderRootElement);
+    }
   }
   ${id}_initImageslider();`;
 

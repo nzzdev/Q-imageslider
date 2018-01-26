@@ -4,16 +4,12 @@
 
 .q-imageslider-image--is-visible {
   opacity: 1 !important;
-  transition: opacity 350ms linear;
+  transition: opacity 350ms ease-out;
 }
 
 .q-imageslider-image--is-hidden {
   opacity: 0 !important;
-  transition: opacity 350ms linear;
-}
-
-.q-imageslider-container {
-  margin-top: 10px;
+  transition: opacity 350ms ease-out;
 }
 
 .q-imageslider-button-container {
@@ -90,4 +86,8 @@
 .q-imageslider-caption {
   margin-top: 8px;
   margin-bottom: 0;
+}
+
+.s-input-switch {
+  margin-bottom: 10px;
 }
