@@ -1,5 +1,5 @@
 const Boom = require("boom");
-var UglifyJS = require("uglify-js");
+const UglifyJS = require("uglify-js");
 const fs = require("fs");
 const path = require("path");
 
