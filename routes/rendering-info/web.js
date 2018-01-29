@@ -1,4 +1,5 @@
 const Boom = require("boom");
+var UglifyJS = require("uglify-js");
 const fs = require("fs");
 const path = require("path");
 
@@ -90,7 +91,7 @@ module.exports = {
       ],
       scripts: [
         {
-          content: getScript(context.id, context.item, context.imageServiceUrl)
+          content: UglifyJS.minify(getScript(context.id, context.item, context.imageServiceUrl)).code
         }
       ],
       markup: nunjucksEnv.render(viewsDir + "imageslider.html", context)

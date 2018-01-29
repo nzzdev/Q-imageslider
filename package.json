@@ -21,7 +21,8 @@
     "node-sass": "^4.7.2",
     "nunjucks": "^3.0.1",
     "postcss": "^6.0.15",
-    "postcss-import": "^11.0.0"
+    "postcss-import": "^11.0.0",
+    "uglify-js": "^3.3.9"
   },
   "devDependencies": {}
 }
