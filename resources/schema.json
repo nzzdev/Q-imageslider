@@ -1,0 +1,96 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "title": "Bildvergleich",
+  "properties": {
+    "title": {
+      "title": "Titel",
+      "type": "string"
+    },
+    "subtitle": {
+      "title": "Untertitel",
+      "type": "string"
+    },
+    "images": {
+      "title": "Bilder",
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "title": "Bild",
+        "type": "object",
+        "properties": {
+          "file": {
+            "type": "object",
+            "Q:type": "files",
+            "Q:options": {
+              "maxFiles": 1,
+              "acceptedFiles": "image/*",
+              "fileProperties": {
+                "url": "url",
+                "key": "key",
+                "size": "size",
+                "width": "width",
+                "height": "height"
+              }
+            }
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "caption": {
+            "title": "Bildlegende",
+            "type": "string"
+          },
+          "credit": {
+            "type": "object",
+            "title": "Bildcredit",
+            "properties": {
+              "text": {
+                "title": "Text",
+                "type": "string"
+              },
+              "link": {
+                "Q:type": "link",
+                "title": "Link",
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "title": "Url",
+                    "type": "string"
+                  },
+                  "isValid": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "required": ["file", "label"]
+      }
+    },
+    "notes": {
+      "title": "Anmerkungen",
+      "type": "string"
+    },
+    "options": {
+      "title": "Optionen",
+      "type": "object",
+      "properties": {
+        "startImage": {
+          "title": "Startbild",
+          "type": "number",
+          "Q:options": {
+            "dynamicEnum": {
+              "type": "ToolEndpoint",
+              "withData": true,
+              "endpoint": "dynamic-enum/startImage"
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": ["title", "images"]
+}
