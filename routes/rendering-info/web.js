@@ -9,6 +9,8 @@ const viewsDir = path.join(__dirname, "/../../views/");
 const getScript = require("../../helpers/renderingInfoScript.js").getScript;
 const getExactPixelWidth = require("../../helpers/toolRuntimeConfig.js")
   .getExactPixelWidth;
+const getUrlsForImageAndWidth = require("../../helpers/images.js")
+  .getUrlsForImageAndWidth;
 
 // setup nunjucks environment
 const nunjucks = require("nunjucks");
@@ -80,6 +82,13 @@ module.exports = {
     );
     if (Number.isInteger(exactPixelWidth)) {
       context.width = exactPixelWidth;
+      item.images.map(image => {
+        image.urls = getUrlsForImageAndWidth(
+          image.file.key,
+          context.width,
+          context.imageServiceUrl
+        );
+      });
     }
 
     const renderingInfo = {
@@ -91,7 +100,9 @@ module.exports = {
       ],
       scripts: [
         {
-          content: UglifyJS.minify(getScript(context.id, context.item, context.imageServiceUrl)).code
+          content: UglifyJS.minify(
+            getScript(context.id, context.item, context.imageServiceUrl)
+          ).code
         }
       ],
       markup: nunjucksEnv.render(viewsDir + "imageslider.html", context)

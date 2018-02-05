@@ -123,8 +123,8 @@ function getScript(id, item, imageServiceUrl) {
     });
   }`;
 
-  let elementMarkup =
-    '<source type="image/webp" srcset="imageServiceUrl/resize?url=imageUrl&width=measuredWidth&nocrop=true&type=webp 1x, imageServiceUrl/resize?url=imageUrl&width=doubleWidth&nocrop=true&type=webp 2x"><source srcset="imageServiceUrl/resize?url=imageUrl&width=measuredWidth&nocrop=true 1x, imageServiceUrl/resize?url=imageUrl&width=doubleWidth&nocrop=true 2x"><img class="q-imageslider-image" data-imageIndex="index" style="position:absolute; display:block; width:100%; opacity: opacityValue;" src="imageServiceUrl/resize?url=imageUrl&width=measuredWidth&nocrop=true">';
+  const elementMarkup =
+    '<source type="image/webp" srcset="webp1x 1x, webp2x 2x"><source srcset="png1x 1x, png2x 2x"><img class="q-imageslider-image" data-imageIndex="index" style="position:absolute; display:block; width:100%; opacity: opacityValue;" src="png1x">';
 
   const constructPictureElementFunction = `
   function constructPictureElement(imageSliderRootElement, sliderImageElements, multiple) {
@@ -153,8 +153,9 @@ function getScript(id, item, imageServiceUrl) {
         var imageIndex = sliderImage.getAttribute("data-imageIndex");
         var startImage = sliderImage.getAttribute("data-startImage");
         var opacityValue = imageIndex === startImage ? 1 : 0;
-        var imageUrl = sliderImage.getAttribute("data-imageUrl");
-        var innerHTMLPictureElement = '${elementMarkup}'.replace(/imageServiceUrl/g, '${imageServiceUrl}').replace(/measuredWidth/g, document._${id}_item.width).replace(/doubleWidth/g, 2 * document._${id}_item.width).replace(/index/g, imageIndex).replace(/imageUrl/g, imageUrl).replace(/opacityValue/g, opacityValue);
+        var imageKey = sliderImage.getAttribute("data-imageKey");
+        var urls = getUrlsForImageAndWidth(imageKey, document._${id}_item.width);
+        var innerHTMLPictureElement = '${elementMarkup}'.replace(/png1x/g, urls.png1x).replace(/png2x/g, urls.png2x).replace(/webp1x/g, urls.webp1x).replace(/webp2x/g, urls.webp2x).replace(/index/g, imageIndex);
         sliderImage.innerHTML = innerHTMLPictureElement;
       });
       if(multiple) {
@@ -163,6 +164,21 @@ function getScript(id, item, imageServiceUrl) {
         addClickEventListeners(imageSliderRootElement);
       }
     });
+  }`;
+
+  const imageUrlFunction = `
+  function getImageUrlForWidthAndFormat(imageKey, width, format) {
+    return '${imageServiceUrl}'.replace(/{key}/g, imageKey)
+      .replace(/{width}/g, width)
+      .replace(/{format}/g, format);
+  }
+  function getUrlsForImageAndWidth(imageKey, width) {
+    return {
+      png1x: getImageUrlForWidthAndFormat(imageKey, width, "png"),
+      png2x: getImageUrlForWidthAndFormat(imageKey, width * 2, "png"),
+      webp1x: getImageUrlForWidthAndFormat(imageKey, width, "webpll"),
+      webp2x: getImageUrlForWidthAndFormat(imageKey, width * 2, "webpll")
+    };
   }`;
 
   const twoImagesScript = `
@@ -175,6 +191,7 @@ function getScript(id, item, imageServiceUrl) {
     ${fireTrackingEventFunction}
     ${trackImageSwitchFunction}
     ${addClickEventListenersFunction}
+    ${imageUrlFunction}
     ${constructPictureElementFunction}
 
     var imageSliderRootElement = document.querySelector("#${id}");
@@ -200,6 +217,7 @@ function getScript(id, item, imageServiceUrl) {
     ${fireTrackingEventFunction}
     ${trackImageSwitchFunction}
     ${addClickEventListenersMultipleFunction}
+    ${imageUrlFunction}
     ${constructPictureElementFunction}
 
     var imageSliderRootElement = document.querySelector("#${id}");
