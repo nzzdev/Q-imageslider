@@ -28,12 +28,12 @@
       {%- for image in item.images %}
         {%- if width %}
         <picture>
-            <source type="image/webp" srcset="{{imageServiceUrl}}/resize?url={{ image.file.url | urlencode }}&width={{ width }}&nocrop=true&type=webp 1x, {{imageServiceUrl}}/resize?url={{ image.file.url | urlencode }}&width={{ 2*width }}&nocrop=true&type=webp 2x">
-            <source srcset="{{imageServiceUrl}}/resize?url={{ image.file.url | urlencode }}&width={{ width }}&nocrop=true 1x, {{imageServiceUrl}}/resize?url={{ image.file.url | urlencode }}&width={{ 2*width }}&nocrop=true 2x">
-            <img class="q-imageslider-image" data-imageIndex="{{ loop.index0 }}" style="position:absolute; display:block; width:100%; {% if loop.index0 === item.options.startImage %} opacity: 1; {% else %} opacity: 0; {% endif %}" src="{{imageServiceUrl}}/resize?url={{ image.file.url| urlencode }}&width={{ width }}&nocrop=true">
+            <source type="image/webp" srcset="{{ image.urls.webp1x }} 1x, {{ image.urls.webp2x }} 2x">
+            <source srcset="{{ image.urls.png1x }} 1x, {{ image.urls.png2x }} 2x">
+            <img class="q-imageslider-image" data-imageIndex="{{ loop.index0 }}" style="position:absolute; display:block; width:100%; {% if loop.index0 === item.options.startImage %} opacity: 1; {% else %} opacity: 0; {% endif %}" src="{{ image.urls.png1x }}">
         </picture>
         {%- else %}
-        <picture data-imageIndex="{{ loop.index0 }}" data-startImage="{{item.options.startImage}}" data-imageUrl="{{image.file.url}}">
+        <picture data-imageIndex="{{ loop.index0 }}" data-startImage="{{item.options.startImage}}" data-imageKey="{{image.file.key}}">
         </picture>
         {%- endif %}
       {%- endfor %}
