@@ -155,7 +155,7 @@ function getScript(id, item, imageServiceUrl) {
         var opacityValue = imageIndex === startImage ? 1 : 0;
         var imageKey = sliderImage.getAttribute("data-imageKey");
         var urls = getUrlsForImageAndWidth(imageKey, document._${id}_item.width);
-        var innerHTMLPictureElement = '${elementMarkup}'.replace(/png1x/g, urls.png1x).replace(/png2x/g, urls.png2x).replace(/webp1x/g, urls.webp1x).replace(/webp2x/g, urls.webp2x).replace(/index/g, imageIndex);
+        var innerHTMLPictureElement = '${elementMarkup}'.replace(/png1x/g, urls.png1x).replace(/png2x/g, urls.png2x).replace(/webp1x/g, urls.webp1x).replace(/webp2x/g, urls.webp2x).replace(/index/g, imageIndex).replace(/opacityValue/g, opacityValue);
         sliderImage.innerHTML = innerHTMLPictureElement;
       });
       if(multiple) {
