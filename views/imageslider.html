@@ -29,8 +29,8 @@
         {%- if width %}
         <picture>
             <source type="image/webp" srcset="{{ image.urls.webp1x }} 1x, {{ image.urls.webp2x }} 2x">
-            <source srcset="{{ image.urls.png1x }} 1x, {{ image.urls.png2x }} 2x">
-            <img class="q-imageslider-image" data-imageIndex="{{ loop.index0 }}" style="position:absolute; display:block; width:100%; {% if loop.index0 === item.options.startImage %} opacity: 1; {% else %} opacity: 0; {% endif %}" src="{{ image.urls.png1x }}">
+            <source srcset="{{ image.urls.image1x }} 1x, {{ image.urls.image2x }} 2x">
+            <img class="q-imageslider-image" data-imageIndex="{{ loop.index0 }}" style="position:absolute; display:block; width:100%; {% if loop.index0 === item.options.startImage %} opacity: 1; {% else %} opacity: 0; {% endif %}" src="{{ image.urls.image1x }}">
         </picture>
         {%- else %}
         <picture data-imageIndex="{{ loop.index0 }}" data-startImage="{{item.options.startImage}}" data-imageKey="{{image.file.key}}">

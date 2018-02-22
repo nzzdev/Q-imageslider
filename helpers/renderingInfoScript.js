@@ -124,7 +124,7 @@ function getScript(id, item, imageServiceUrl) {
   }`;
 
   const elementMarkup =
-    '<source type="image/webp" srcset="webp1x 1x, webp2x 2x"><source srcset="png1x 1x, png2x 2x"><img class="q-imageslider-image" data-imageIndex="index" style="position:absolute; display:block; width:100%; opacity: opacityValue;" src="png1x">';
+    '<source type="image/webp" srcset="{webp1x} 1x, {webp2x} 2x"><source srcset="{image1x} 1x {image2x} 2x"><img class="q-imageslider-image" data-imageIndex="{index}" style="position:absolute; display:block; width:100%; opacity: {opacityValue};" src="{image1x}">';
 
   const constructPictureElementFunction = `
   function constructPictureElement(imageSliderRootElement, sliderImageElements, multiple) {
@@ -154,8 +154,8 @@ function getScript(id, item, imageServiceUrl) {
         var startImage = sliderImage.getAttribute("data-startImage");
         var opacityValue = imageIndex === startImage ? 1 : 0;
         var imageKey = sliderImage.getAttribute("data-imageKey");
-        var urls = getUrlsForImageAndWidth(imageKey, document._${id}_item.width);
-        var innerHTMLPictureElement = '${elementMarkup}'.replace(/png1x/g, urls.png1x).replace(/png2x/g, urls.png2x).replace(/webp1x/g, urls.webp1x).replace(/webp2x/g, urls.webp2x).replace(/index/g, imageIndex).replace(/opacityValue/g, opacityValue);
+        var urls = getImageUrls(imageKey, document._${id}_item.width);
+        var innerHTMLPictureElement = '${elementMarkup}'.replace(/{image1x}/g, urls.image1x).replace(/{image2x}/g, urls.image2x).replace(/{webp1x}/g, urls.webp1x).replace(/{webp2x}/g, urls.webp2x).replace(/{index}/g, imageIndex).replace(/{opacityValue}/g, opacityValue);
         sliderImage.innerHTML = innerHTMLPictureElement;
       });
       if(multiple) {
@@ -167,17 +167,25 @@ function getScript(id, item, imageServiceUrl) {
   }`;
 
   const imageUrlFunction = `
-  function getImageUrlForWidthAndFormat(imageKey, width, format) {
+  function getFileExtension(imageKey) {
+    var fileExtensionPattern = /\.([0-9a-z]+$)/i;
+    var fileExtension = imageKey.match(fileExtensionPattern)[1];
+    if(fileExtension === "png") {
+      return "png";
+    }
+    return "pjpg";
+  }
+  function getImageUrl(imageKey, width, format) {
     return '${imageServiceUrl}'.replace(/{key}/g, imageKey)
       .replace(/{width}/g, width)
       .replace(/{format}/g, format);
   }
-  function getUrlsForImageAndWidth(imageKey, width) {
+  function getImageUrls(imageKey, width) {
     return {
-      png1x: getImageUrlForWidthAndFormat(imageKey, width, "png"),
-      png2x: getImageUrlForWidthAndFormat(imageKey, width * 2, "png"),
-      webp1x: getImageUrlForWidthAndFormat(imageKey, width, "webpll"),
-      webp2x: getImageUrlForWidthAndFormat(imageKey, width * 2, "webpll")
+      image1x: getImageUrl(imageKey, width, getFileExtension(imageKey)),
+      image2x: getImageUrl(imageKey, width * 2, getFileExtension(imageKey)),
+      webp1x: getImageUrl(imageKey, width, "webply"),
+      webp2x: getImageUrl(imageKey, width * 2, "webply")
     };
   }`;
 
