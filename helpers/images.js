@@ -1,18 +1,27 @@
-function getImageUrlForWidthAndFormat(imageKey, width, format) {
+function getImageUrls(imageKey, width) {
+  return {
+    image1x: getImageUrl(imageKey, width, getFileExtension(imageKey)),
+    image2x: getImageUrl(imageKey, width * 2, getFileExtension(imageKey)),
+    webp1x: getImageUrl(imageKey, width, "webply"),
+    webp2x: getImageUrl(imageKey, width * 2, "webply")
+  };
+}
+
+function getImageUrl(imageKey, width, format) {
   return process.env.IMAGE_SERVICE_URL.replace("{key}", imageKey)
     .replace("{width}", width)
     .replace("{format}", format);
 }
 
-function getUrlsForImageAndWidth(imageKey, width) {
-  return {
-    png1x: getImageUrlForWidthAndFormat(imageKey, width, "png"),
-    png2x: getImageUrlForWidthAndFormat(imageKey, width * 2, "png"),
-    webp1x: getImageUrlForWidthAndFormat(imageKey, width, "webpll"),
-    webp2x: getImageUrlForWidthAndFormat(imageKey, width * 2, "webpll")
-  };
+function getFileExtension(imageKey) {
+  const fileExtensionPattern = /\.([0-9a-z]+$)/i;
+  const fileExtension = imageKey.match(fileExtensionPattern);
+  if(fileExtension[1] === "png") {
+    return "png";
+  }
+  return "pjpg";
 }
 
 module.exports = {
-  getUrlsForImageAndWidth: getUrlsForImageAndWidth
+  getImageUrls: getImageUrls
 };
