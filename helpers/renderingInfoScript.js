@@ -169,8 +169,8 @@ function getScript(id, item, imageServiceUrl) {
   const imageUrlFunction = `
   function getFileExtension(imageKey) {
     var fileExtensionPattern = /\.([0-9a-z]+$)/i;
-    var fileExtension = imageKey.match(fileExtensionPattern)[1];
-    if(fileExtension === "png") {
+    var fileExtension = imageKey.match(fileExtensionPattern);
+    if(fileExtension[1] === "png") {
       return "png";
     }
     return "pjpg";
