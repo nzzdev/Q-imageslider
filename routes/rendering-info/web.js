@@ -9,8 +9,7 @@ const viewsDir = path.join(__dirname, "/../../views/");
 const getScript = require("../../helpers/renderingInfoScript.js").getScript;
 const getExactPixelWidth = require("../../helpers/toolRuntimeConfig.js")
   .getExactPixelWidth;
-const getUrlsForImageAndWidth = require("../../helpers/images.js")
-  .getUrlsForImageAndWidth;
+const getImageUrls = require("../../helpers/images.js").getImageUrls;
 
 // setup nunjucks environment
 const nunjucks = require("nunjucks");
@@ -80,10 +79,11 @@ module.exports = {
     const exactPixelWidth = getExactPixelWidth(
       request.payload.toolRuntimeConfig
     );
+
     if (Number.isInteger(exactPixelWidth)) {
       context.width = exactPixelWidth;
       item.images.map(image => {
-        image.urls = getUrlsForImageAndWidth(
+        image.urls = getImageUrls(
           image.file.key,
           context.width,
           context.imageServiceUrl
