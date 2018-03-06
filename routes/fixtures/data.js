@@ -7,6 +7,7 @@ const fixtureData = [
   require(`${fixtureDataDirectory}/two-images-long-labels.json`),
   require(`${fixtureDataDirectory}/two-images-only-required-properties.json`),
   require(`${fixtureDataDirectory}/two-images-valid-invalid-source-links.json`),
+  require(`${fixtureDataDirectory}/two-images-different-image-heights.json`),
   require(`${fixtureDataDirectory}/three-images.json`),
   require(`${fixtureDataDirectory}/three-images-long-labels.json`),
   require(`${fixtureDataDirectory}/three-images-only-required-properties.json`),

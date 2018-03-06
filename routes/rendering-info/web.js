@@ -64,6 +64,14 @@ module.exports = {
   handler: async function(request, h) {
     const item = request.payload.item;
     item.id = request.query._id;
+    const tallestImage = item.images
+      .slice()
+      .sort((a, b) => {
+        const aspectRatioA = a.file.height / a.file.width * 100;
+        const aspectRationB = b.file.height / b.file.width * 100;
+        return aspectRatioA - aspectRationB;
+      })
+      .pop();
 
     const context = {
       item: item,
@@ -71,7 +79,9 @@ module.exports = {
       id: `q_imageslider_${request.query._id}_${Math.floor(
         Math.random() * 100000
       )}`.replace(/-/g, ""),
-      imageServiceUrl: process.env.IMAGE_SERVICE_URL
+      imageServiceUrl: process.env.IMAGE_SERVICE_URL,
+      startImage: item.images[item.options.startImage],
+      paddingBottom: tallestImage.file.height / tallestImage.file.width * 100
     };
 
     // if we have the width in toolRuntimeConfig.size
