@@ -23,8 +23,7 @@
   </div>
   {% endif %}
   <div class="q-imageslider-container">
-    {% set startImage = item.images[item.options.startImage] %}
-    <div class="q-imageslider-image-container" style="position:relative; padding-bottom: {{ ((startImage.file.height / startImage.file.width) * 100) | round(2) }}%">
+    <div class="q-imageslider-image-container" style="position:relative; padding-bottom: {{ paddingBottom }}%">
       {%- for image in item.images %}
         {%- if width %}
         <picture>
