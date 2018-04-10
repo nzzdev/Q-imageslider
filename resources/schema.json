@@ -15,6 +15,11 @@
       "title": "Bilder",
       "type": "array",
       "minItems": 2,
+      "Q:options": {
+        "expandable": {
+          "itemLabelProperty": ["label"]
+        }
+      },
       "items": {
         "title": "Bild",
         "type": "object",
