@@ -67,8 +67,8 @@ module.exports = {
     const tallestImage = item.images
       .slice()
       .sort((a, b) => {
-        const aspectRatioA = a.file.height / a.file.width * 100;
-        const aspectRationB = b.file.height / b.file.width * 100;
+        const aspectRatioA = (a.file.height / a.file.width) * 100;
+        const aspectRationB = (b.file.height / b.file.width) * 100;
         return aspectRatioA - aspectRationB;
       })
       .pop();
@@ -81,7 +81,7 @@ module.exports = {
       )}`.replace(/-/g, ""),
       imageServiceUrl: process.env.IMAGE_SERVICE_URL,
       startImage: item.images[item.options.startImage],
-      paddingBottom: tallestImage.file.height / tallestImage.file.width * 100
+      paddingBottom: (tallestImage.file.height / tallestImage.file.width) * 100
     };
 
     // if we have the width in toolRuntimeConfig.size
@@ -90,7 +90,7 @@ module.exports = {
       request.payload.toolRuntimeConfig
     );
 
-    if (Number.isInteger(exactPixelWidth)) {
+    if (typeof exactPixelWidth === "number") {
       context.width = exactPixelWidth;
       item.images.map(image => {
         image.urls = getImageUrls(
