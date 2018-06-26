@@ -52,7 +52,7 @@
             "title": "Bildcredit",
             "properties": {
               "text": {
-                "title": "Text",
+                "title": "Credit",
                 "type": "string"
               },
               "link": {
@@ -61,8 +61,11 @@
                 "type": "object",
                 "properties": {
                   "url": {
-                    "title": "Url",
-                    "type": "string"
+                    "title": "Link",
+                    "type": "string",
+                    "Q:options": {
+                      "placeholder": "Direktlink zum Fotografen, http://..."
+                  }
                   },
                   "isValid": {
                     "type": "boolean"
