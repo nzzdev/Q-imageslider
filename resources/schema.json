@@ -69,6 +69,17 @@
                   }
                 }
               }
+            },
+            "Q:options": {
+              "expandable": {
+                "itemLabelProperty": ["minWidth"]
+              },
+              "availabilityChecks": [
+                {
+                  "type": "UserHasRole",
+                  "role": "expert-imageslider"
+                }
+              ]
             }
           },
           "label": {
