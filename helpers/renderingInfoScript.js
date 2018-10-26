@@ -191,7 +191,7 @@ function getScript(
     var imageSliderRootElement = document.querySelector("#${id}");
     var sliderImageElements = Array.prototype.slice.call(imageSliderRootElement.querySelector(".q-imageslider-images").children);
     // Construct picture element on client side if not already done on server-side
-    if(sliderImageElements[0].children.length === 0) {
+    if(sliderImageElements.length === 0) {
       loadImages(imageSliderRootElement, false);
     } else {
       addClickEventListeners(imageSliderRootElement);
@@ -216,7 +216,7 @@ function getScript(
     var imageSliderRootElement = document.querySelector("#${id}");
     var sliderImageElements = Array.prototype.slice.call(imageSliderRootElement.querySelector(".q-imageslider-images").children);
     // Construct picture element on client side if not already done on server-side
-    if(sliderImageElements[0].children.length === 0) {
+    if(sliderImageElements.length === 0) {
       loadImages(imageSliderRootElement, true);
     } else {
       addClickEventListenersMultiple(imageSliderRootElement);

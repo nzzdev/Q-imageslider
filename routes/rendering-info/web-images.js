@@ -61,26 +61,38 @@ module.exports = {
   },
   handler: async function(request, h) {
     const item = request.payload.item;
-    item.images.map(image => {
-      image.urls = imageHelpers.getImageUrls(
-        image.file.key,
+    const matchingVariants = [];
+    for (let image of item.images) {
+      // puts top level image with minWidth 0 to the beginning of the variants array
+      let variants = [];
+      if (image.variants) {
+        variants = image.variants;
+      }
+      variants.unshift({
+        minWidth: 0,
+        file: image.file
+      });
+
+      // gets the matching variant based on the width
+      const variant = imageHelpers.getVariantForWidth(
+        variants,
         request.query.width
       );
-    });
 
-    const tallestImage = item.images
-      .slice()
-      .sort((a, b) => {
-        const aspectRatioA = (a.file.height / a.file.width) * 100;
-        const aspectRationB = (b.file.height / b.file.width) * 100;
-        return aspectRatioA - aspectRationB;
-      })
-      .pop();
+      // collect all matchingVariants to calculate the paddingBottom value
+      matchingVariants.push(variant);
+
+      // gets the necessary url strings to build the picture element
+      image.urls = imageHelpers.getImageUrls(
+        variant.file.key,
+        request.query.width
+      );
+    }
 
     const context = {
       item: item,
       startImage: item.images[item.options.startImage],
-      paddingBottom: (tallestImage.file.height / tallestImage.file.width) * 100
+      paddingBottom: imageHelpers.getPaddingBottom(matchingVariants)
     };
 
     let markup;
