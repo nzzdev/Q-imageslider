@@ -9,7 +9,6 @@ const viewsDir = path.join(__dirname, "/../../views/");
 const getScript = require("../../helpers/renderingInfoScript.js").getScript;
 const getExactPixelWidth = require("../../helpers/toolRuntimeConfig.js")
   .getExactPixelWidth;
-const getImageUrls = require("../../helpers/images.js").getImageUrls;
 
 // setup nunjucks environment
 const nunjucks = require("nunjucks");
@@ -64,24 +63,13 @@ module.exports = {
   handler: async function(request, h) {
     const item = request.payload.item;
     item.id = request.query._id;
-    const tallestImage = item.images
-      .slice()
-      .sort((a, b) => {
-        const aspectRatioA = (a.file.height / a.file.width) * 100;
-        const aspectRationB = (b.file.height / b.file.width) * 100;
-        return aspectRatioA - aspectRationB;
-      })
-      .pop();
 
     const context = {
       item: item,
       displayOptions: request.payload.toolRuntimeConfig.displayOptions || {},
       id: `q_imageslider_${request.query._id}_${Math.floor(
         Math.random() * 100000
-      )}`.replace(/-/g, ""),
-      imageServiceUrl: process.env.IMAGE_SERVICE_URL,
-      startImage: item.images[item.options.startImage],
-      paddingBottom: (tallestImage.file.height / tallestImage.file.width) * 100
+      )}`.replace(/-/g, "")
     };
 
     // if we have the width in toolRuntimeConfig.size
@@ -91,18 +79,40 @@ module.exports = {
     );
 
     if (typeof exactPixelWidth === "number") {
-      context.width = exactPixelWidth;
-      item.images.map(image => {
-        image.urls = getImageUrls(
-          image.file.key,
-          context.width,
-          context.imageServiceUrl
-        );
+      const imagesResponse = await request.server.inject({
+        method: "POST",
+        url: `/rendering-info/web-images?width=${exactPixelWidth}`,
+        payload: request.payload
       });
+      context.imagesMarkup = imagesResponse.result.markup;
+    } else {
+      // compute some properties for the inline script to be returned that handles requesting the images for the measured width
+      const queryParams = {};
+
+      // add the item id to appendItemToPayload if it's state is in the db (aka not preview)
+      if (request.payload.itemStateInDb) {
+        queryParams.appendItemToPayload = request.query._id;
+      }
+
+      let requestMethod;
+      let requestBodyString;
+
+      // if we have the current item state in DB, we do a GET request, otherwise POST with the item in the payload
+      if (request.payload.itemStateInDb === true) {
+        requestMethod = "GET";
+        queryParams.appendItemToPayload = request.query._id;
+      } else {
+        requestMethod = "POST";
+        queryParams.noCache = true; // set this if we do not have item state in DB as it will probably change
+        requestBodyString = JSON.stringify({
+          item: request.payload.item,
+          toolRuntimeConfig: request.payload.toolRuntimeConfig
+        });
+      }
     }
 
     const renderingInfo = {
-      polyfills: ["Promise", "CustomEvent"],
+      polyfills: ["Promise", "CustomEvent", "fetch"],
       stylesheets: [
         {
           name: styleHashMap["default"]
@@ -111,7 +121,14 @@ module.exports = {
       scripts: [
         {
           content: UglifyJS.minify(
-            getScript(context.id, context.item, context.imageServiceUrl)
+            getScript(
+              context.id,
+              request.payload.toolRuntimeConfig.toolBaseUrl,
+              context.item,
+              (requestMethod = undefined),
+              (queryParams = undefined),
+              (requestBodyString = undefined)
+            )
           ).code
         }
       ],
