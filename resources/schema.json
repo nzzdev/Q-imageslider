@@ -33,10 +33,55 @@
               "fileProperties": {
                 "url": "url",
                 "key": "key",
-                "size": "size",
                 "width": "width",
-                "height": "height"
+                "height": "height",
+                "size": "size",
+                "type": "type"
               }
+            }
+          },
+          "variants": {
+            "title": "Varianten",
+            "type": "array",
+            "items": {
+              "title": "Variante",
+              "type": "object",
+              "properties": {
+                "minWidth": {
+                  "title": "Mindestbreite in px für diese Variante",
+                  "type": "number",
+                  "default": 0,
+                  "minimum": 0
+                },
+                "file": {
+                  "title": "Bild",
+                  "type": "object",
+                  "Q:type": "files",
+                  "Q:options": {
+                    "maxFiles": 1,
+                    "acceptedFiles": "image/*",
+                    "fileProperties": {
+                      "url": "url",
+                      "key": "key",
+                      "width": "width",
+                      "height": "height",
+                      "size": "size",
+                      "type": "type"
+                    }
+                  }
+                }
+              }
+            },
+            "Q:options": {
+              "expandable": {
+                "itemLabelProperty": ["minWidth"]
+              },
+              "availabilityChecks": [
+                {
+                  "type": "UserHasRole",
+                  "role": "expert-imageslider"
+                }
+              ]
             }
           },
           "label": {
@@ -65,7 +110,7 @@
                     "type": "string",
                     "Q:options": {
                       "placeholder": "Direktlink zum Fotografen, http://..."
-                  }
+                    }
                   },
                   "isValid": {
                     "type": "boolean"

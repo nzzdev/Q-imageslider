@@ -61,26 +61,50 @@ module.exports = {
   },
   handler: async function(request, h) {
     const item = request.payload.item;
-    item.images.map(image => {
-      image.urls = imageHelpers.getImageUrls(
-        image.file.key,
-        request.query.width
-      );
-    });
+    const matchingVariants = [];
+    for (let image of item.images) {
+      let variants = [];
+      if (image.variants && image.variants.length > 0) {
+        // Only consider variants which have a file key
+        variants = image.variants.filter(variant => {
+          return variant.file && variant.file.key;
+        });
+      }
+      if (image.file && image.file.key) {
+        // puts top level image with minWidth 0 to the beginning of the variants array
+        variants.unshift({
+          minWidth: 0,
+          file: image.file
+        });
+      }
 
-    const tallestImage = item.images
-      .slice()
-      .sort((a, b) => {
-        const aspectRatioA = (a.file.height / a.file.width) * 100;
-        const aspectRationB = (b.file.height / b.file.width) * 100;
-        return aspectRatioA - aspectRationB;
-      })
-      .pop();
+      let variant;
+      if (variants.length > 0) {
+        // gets the matching variant based on the width
+        variant = imageHelpers.getVariantForWidth(
+          variants,
+          request.query.width
+        );
+      }
+
+      if (variant) {
+        // collect all matchingVariants to calculate the paddingBottom value
+        matchingVariants.push(variant);
+      }
+
+      if (variant) {
+        // gets the necessary url strings to build the picture element
+        image.urls = imageHelpers.getImageUrls(
+          variant.file.key,
+          request.query.width
+        );
+      }
+    }
 
     const context = {
       item: item,
       startImage: item.images[item.options.startImage],
-      paddingBottom: (tallestImage.file.height / tallestImage.file.width) * 100
+      paddingBottom: imageHelpers.getPaddingBottom(matchingVariants)
     };
 
     let markup;

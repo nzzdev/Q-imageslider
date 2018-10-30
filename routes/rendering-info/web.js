@@ -78,6 +78,11 @@ module.exports = {
       request.payload.toolRuntimeConfig
     );
 
+    // compute some properties for the inline script to be returned that handles requesting the images for the measured width
+    let requestMethod;
+    let requestBodyString;
+    const queryParams = {};
+
     if (typeof exactPixelWidth === "number") {
       const imagesResponse = await request.server.inject({
         method: "POST",
@@ -86,16 +91,10 @@ module.exports = {
       });
       context.imagesMarkup = imagesResponse.result.markup;
     } else {
-      // compute some properties for the inline script to be returned that handles requesting the images for the measured width
-      const queryParams = {};
-
       // add the item id to appendItemToPayload if it's state is in the db (aka not preview)
       if (request.payload.itemStateInDb) {
         queryParams.appendItemToPayload = request.query._id;
       }
-
-      let requestMethod;
-      let requestBodyString;
 
       // if we have the current item state in DB, we do a GET request, otherwise POST with the item in the payload
       if (request.payload.itemStateInDb === true) {
@@ -125,9 +124,9 @@ module.exports = {
               context.id,
               request.payload.toolRuntimeConfig.toolBaseUrl,
               context.item,
-              (requestMethod = undefined),
-              (queryParams = undefined),
-              (requestBodyString = undefined)
+              requestMethod,
+              queryParams,
+              requestBodyString
             )
           ).code
         }
