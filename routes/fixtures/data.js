@@ -10,6 +10,7 @@ const fixtureData = [
   require(`${fixtureDataDirectory}/two-images-different-image-heights.json`),
   require(`${fixtureDataDirectory}/two-images-size-variants.json`),
   require(`${fixtureDataDirectory}/two-images-size-variants-all-minWidth-0.json`),
+  require(`${fixtureDataDirectory}/two-images-size-variants-missing-images.json`),
   require(`${fixtureDataDirectory}/three-images.json`),
   require(`${fixtureDataDirectory}/three-images-long-labels.json`),
   require(`${fixtureDataDirectory}/three-images-only-required-properties.json`),
