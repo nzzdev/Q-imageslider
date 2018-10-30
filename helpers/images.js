@@ -11,15 +11,6 @@ function getValidMinWidths(variants, width) {
 }
 
 function getVariantForWidth(variants, width) {
-  // undefined minWidths are set to 0
-  // as they are valid as long as no defined one is wider than the given width
-  variants = variants.map(variant => {
-    if (variant.minWidth === undefined) {
-      variant.minWidth = 0;
-    }
-    return variant;
-  });
-
   const validMinWidths = getValidMinWidths(variants, width);
 
   // our minWidths are exclusive if we have more than one, only the widest valid one wins
@@ -60,15 +51,19 @@ function getFileExtension(imageKey) {
 function getPaddingBottom(matchingVariants) {
   // paddingBottom is based on the image with the biggest aspectRatio
   // only the image variants matching the current width are taken into account
-  const tallestImage = matchingVariants
-    .slice()
-    .sort((a, b) => {
-      const aspectRatioA = (a.file.height / a.file.width) * 100;
-      const aspectRationB = (b.file.height / b.file.width) * 100;
-      return aspectRatioA - aspectRationB;
-    })
-    .pop();
-  return (tallestImage.file.height / tallestImage.file.width) * 100;
+  let paddingBottom = 100;
+  if (matchingVariants.length > 0) {
+    const tallestImage = matchingVariants
+      .slice()
+      .sort((a, b) => {
+        const aspectRatioA = (a.file.height / a.file.width) * 100;
+        const aspectRationB = (b.file.height / b.file.width) * 100;
+        return aspectRatioA - aspectRationB;
+      })
+      .pop();
+    paddingBottom = (tallestImage.file.height / tallestImage.file.width) * 100;
+  }
+  return paddingBottom;
 }
 
 module.exports = {

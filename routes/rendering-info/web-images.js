@@ -63,30 +63,42 @@ module.exports = {
     const item = request.payload.item;
     const matchingVariants = [];
     for (let image of item.images) {
-      // puts top level image with minWidth 0 to the beginning of the variants array
       let variants = [];
-      if (image.variants) {
-        variants = image.variants;
+      if (image.variants && image.variants.length > 0) {
+        // Only consider variants which have a file key
+        variants = image.variants.filter(variant => {
+          return variant.file && variant.file.key;
+        });
       }
-      variants.unshift({
-        minWidth: 0,
-        file: image.file
-      });
+      if (image.file && image.file.key) {
+        // puts top level image with minWidth 0 to the beginning of the variants array
+        variants.unshift({
+          minWidth: 0,
+          file: image.file
+        });
+      }
 
-      // gets the matching variant based on the width
-      const variant = imageHelpers.getVariantForWidth(
-        variants,
-        request.query.width
-      );
+      let variant;
+      if (variants.length > 0) {
+        // gets the matching variant based on the width
+        variant = imageHelpers.getVariantForWidth(
+          variants,
+          request.query.width
+        );
+      }
 
-      // collect all matchingVariants to calculate the paddingBottom value
-      matchingVariants.push(variant);
+      if (variant) {
+        // collect all matchingVariants to calculate the paddingBottom value
+        matchingVariants.push(variant);
+      }
 
-      // gets the necessary url strings to build the picture element
-      image.urls = imageHelpers.getImageUrls(
-        variant.file.key,
-        request.query.width
-      );
+      if (variant) {
+        // gets the necessary url strings to build the picture element
+        image.urls = imageHelpers.getImageUrls(
+          variant.file.key,
+          request.query.width
+        );
+      }
     }
 
     const context = {

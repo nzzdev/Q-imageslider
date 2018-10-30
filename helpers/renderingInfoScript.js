@@ -8,40 +8,38 @@ function getScript(
   queryParams,
   requestBodyString
 ) {
-  const setPaddingBottomFunction = `
-  function setPaddingBottom(sliderImage) {
-    var width = sliderImage.getAttribute("data-width");
-    var height = sliderImage.getAttribute("data-height");
-    var imageRatio = (height / width) * 100;
-    sliderImage.parentNode.style.paddingBottom = Math.round(imageRatio * 100) / 100 + "%";
-  };`;
-
   const setCaptionFunction = `
   function setCaption(imageSliderRootElement, sliderImage) {
-    var index = sliderImage.getAttribute("data-imageIndex");
-    var image = document._${id}_item.images[index];
-    var captionElement = imageSliderRootElement.querySelector(".q-imageslider-caption");
-    captionElement.childNodes[0].nodeValue = image.caption;
-    captionElement.childNodes[1].innerHTML = "";
-    if(image.credit) {
-      if(image.credit.link.url && image.credit.link.isValid) {
-        captionElement.childNodes[1].innerHTML = " (Bild: <a href='" + image.credit.link.url + "' target='blank' rel='noopener noreferrer'>" + image.credit.text + "</a>)";
-      } else if(image.credit.text) {
-        captionElement.childNodes[1].innerHTML = " (Bild: " + image.credit.text + ")";
+    if(sliderImage) {
+      var index = sliderImage.getAttribute("data-imageIndex");
+      var image = document._${id}_item.images[index];
+      var captionElement = imageSliderRootElement.querySelector(".q-imageslider-caption");
+      captionElement.childNodes[0].nodeValue = image.caption;
+      captionElement.childNodes[1].innerHTML = "";
+      if(image.credit) {
+        if(image.credit.link.url && image.credit.link.isValid) {
+          captionElement.childNodes[1].innerHTML = " (Bild: <a href='" + image.credit.link.url + "' target='blank' rel='noopener noreferrer'>" + image.credit.text + "</a>)";
+        } else if(image.credit.text) {
+          captionElement.childNodes[1].innerHTML = " (Bild: " + image.credit.text + ")";
+        }
       }
     }
   };`;
 
   const showSliderImageFunction = `
   function showSliderImage(sliderImage) {
-    sliderImage.classList.add("q-imageslider-image--is-visible");
-    sliderImage.classList.remove("q-imageslider-image--is-hidden");
+    if(sliderImage) {
+      sliderImage.classList.add("q-imageslider-image--is-visible");
+      sliderImage.classList.remove("q-imageslider-image--is-hidden");
+    }
   };`;
 
   const hideSliderImageFunction = `
   function hideSliderImage(sliderImage) {
-    sliderImage.classList.add("q-imageslider-image--is-hidden");
-    sliderImage.classList.remove("q-imageslider-image--is-visible");
+    if(sliderImage) {
+      sliderImage.classList.add("q-imageslider-image--is-hidden");
+      sliderImage.classList.remove("q-imageslider-image--is-visible");
+    }
   };`;
 
   const enableSliderButtonFunction = `
@@ -91,13 +89,11 @@ function getScript(
         hideSliderImage(sliderImages[0]);
         showSliderImage(sliderImages[1]);
         setCaption(imageSliderRootElement, sliderImages[1]);
-        setPaddingBottom(sliderImages[1]);
         trackImageSwitch(imageSliderRootElement, 1);
       } else {
         hideSliderImage(sliderImages[1]);
         showSliderImage(sliderImages[0]);
         setCaption(imageSliderRootElement, sliderImages[0]);
-        setPaddingBottom(sliderImages[0]);
         trackImageSwitch(imageSliderRootElement, 0);
       }
     });
@@ -122,7 +118,6 @@ function getScript(
           if(buttonIndex === imageIndex) {
             showSliderImage(sliderImage);
             setCaption(imageSliderRootElement, sliderImage);
-            setPaddingBottom(sliderImage);
             trackImageSwitch(imageSliderRootElement, imageIndex);
           } else {
             hideSliderImage(sliderImage);
@@ -179,7 +174,6 @@ function getScript(
   const twoImagesScript = `
   function ${id}_initImageslider() {
     document._${id}_item = ${JSON.stringify(item)};
-    ${setPaddingBottomFunction}
     ${setCaptionFunction}
     ${showSliderImageFunction}
     ${hideSliderImageFunction}
@@ -202,7 +196,6 @@ function getScript(
   const multipleImagesScript = `
   function ${id}_initImageslider() {
     document._${id}_item = ${JSON.stringify(item)};
-    ${setPaddingBottomFunction}
     ${setCaptionFunction}
     ${showSliderImageFunction}
     ${hideSliderImageFunction}

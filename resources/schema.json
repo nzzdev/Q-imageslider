@@ -50,7 +50,7 @@
                 "minWidth": {
                   "title": "Mindestbreite in px für diese Variante",
                   "type": "number",
-                  "default": 500,
+                  "default": 0,
                   "minimum": 0
                 },
                 "file": {
