@@ -8,7 +8,8 @@
         "key": "2018/10/26/300x200-72ffaf048d871c975b5949b449a267cd.png",
         "width": 300,
         "height": 200,
-        "size": 4459
+        "size": 4459,
+        "type": "image/png"
       },
       "variants": [
         {
@@ -18,7 +19,8 @@
             "key": "2018/10/26/500x400-8f2db130d85695d3d4bf80961f3be9fe.png",
             "width": 500,
             "height": 400,
-            "size": 7660
+            "size": 7660,
+            "type": "image/png"
           }
         },
         {
@@ -28,7 +30,8 @@
             "key": "2018/10/26/800x500-1057eb3269be3d7f80f920cccb75aebd.png",
             "width": 800,
             "height": 500,
-            "size": 14856
+            "size": 14856,
+            "type": "image/png"
           }
         }
       ],
@@ -48,7 +51,8 @@
         "key": "2018/10/26/300x200-72ffaf048d871c975b5949b449a267cd.png",
         "width": 300,
         "height": 200,
-        "size": 4459
+        "size": 4459,
+        "type": "image/png"
       },
       "variants": [
         {
@@ -58,7 +62,8 @@
             "key": "2018/10/26/500x400-8f2db130d85695d3d4bf80961f3be9fe.png",
             "width": 500,
             "height": 400,
-            "size": 7660
+            "size": 7660,
+            "type": "image/png"
           }
         },
         {
@@ -68,7 +73,8 @@
             "key": "2018/10/26/800x500-1057eb3269be3d7f80f920cccb75aebd.png",
             "width": 800,
             "height": 500,
-            "size": 14856
+            "size": 14856,
+            "type": "image/png"
           }
         }
       ],

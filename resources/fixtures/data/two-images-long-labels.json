@@ -1,20 +1,18 @@
 {
   "title": "FIXTURE: two images - long labels",
-  "subtitle":
-    "Die NZZ hat Ansichtskarten von anno dazumal denselben Perspektiven von heute gegenübergestellt. Manifest wurden landschaftlicher, klimatischer und wirtschaftlicher Wandel und Merkmale der Politik.",
+  "subtitle": "Die NZZ hat Ansichtskarten von anno dazumal denselben Perspektiven von heute gegenübergestellt. Manifest wurden landschaftlicher, klimatischer und wirtschaftlicher Wandel und Merkmale der Politik.",
   "images": [
     {
       "file": {
-        "url":
-          "https://nzz-q-assets-stage.s3.eu-west-1.amazonaws.com/2018/01/22/100f0cac-7fde-4f18-8c4b-a7fbf8d0bfe1.jpeg",
+        "url": "https://nzz-q-assets-stage.s3.eu-west-1.amazonaws.com/2018/01/22/100f0cac-7fde-4f18-8c4b-a7fbf8d0bfe1.jpeg",
         "key": "2018/01/22/100f0cac-7fde-4f18-8c4b-a7fbf8d0bfe1.jpeg",
         "size": "37.9",
         "width": "540",
-        "height": "338"
+        "height": "338",
+        "type": "image/jpeg"
       },
       "label": "1965 - Es sind auch sehr sehr lange Labels möglich",
-      "caption":
-        "Ansichtskarte, versendet 1965: Der Verkehr auf dem Zürcher Bahnhofplatz wird von Hand geregelt.",
+      "caption": "Ansichtskarte, versendet 1965: Der Verkehr auf dem Zürcher Bahnhofplatz wird von Hand geregelt.",
       "credit": {
         "text": "Simon Tanner / NZZ",
         "link": {
@@ -25,16 +23,15 @@
     },
     {
       "file": {
-        "url":
-          "https://nzz-q-assets-stage.s3.eu-west-1.amazonaws.com/2018/01/22/aca7f157-c497-46bf-985e-3fc5f47444d4.jpeg",
+        "url": "https://nzz-q-assets-stage.s3.eu-west-1.amazonaws.com/2018/01/22/aca7f157-c497-46bf-985e-3fc5f47444d4.jpeg",
         "key": "2018/01/22/aca7f157-c497-46bf-985e-3fc5f47444d4.jpeg",
         "size": "37.9",
         "width": "540",
-        "height": "338"
+        "height": "338",
+        "type": "image/jpeg"
       },
       "label": "2017",
-      "caption":
-        "Das heutige Bild ist ähnlich. Grundlegend verändert hat sich der HB aber unter der Erde.",
+      "caption": "Das heutige Bild ist ähnlich. Grundlegend verändert hat sich der HB aber unter der Erde.",
       "credit": {
         "text": "Simon Tanner / NZZ",
         "link": {
