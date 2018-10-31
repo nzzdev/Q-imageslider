@@ -1,38 +1,45 @@
-function getScript(id, item, imageServiceUrl) {
-  const setPaddingBottomFunction = `
-  function setPaddingBottom(sliderImage) {
-    var width = sliderImage.getAttribute("data-width");
-    var height = sliderImage.getAttribute("data-height");
-    var imageRatio = (height / width) * 100;
-    sliderImage.parentNode.style.paddingBottom = Math.round(imageRatio * 100) / 100 + "%";
-  };`;
+const querystring = require("querystring");
 
+function getScript(
+  id,
+  toolBaseUrl,
+  item,
+  method,
+  queryParams,
+  requestBodyString
+) {
   const setCaptionFunction = `
   function setCaption(imageSliderRootElement, sliderImage) {
-    var index = sliderImage.getAttribute("data-imageIndex");
-    var image = document._${id}_item.images[index];
-    var captionElement = imageSliderRootElement.querySelector(".q-imageslider-caption");
-    captionElement.childNodes[0].nodeValue = image.caption;
-    captionElement.childNodes[1].innerHTML = "";
-    if(image.credit) {
-      if(image.credit.link.url && image.credit.link.isValid) {
-        captionElement.childNodes[1].innerHTML = " (Bild: <a href='" + image.credit.link.url + "' target='blank' rel='noopener noreferrer'>" + image.credit.text + "</a>)";
-      } else if(image.credit.text) {
-        captionElement.childNodes[1].innerHTML = " (Bild: " + image.credit.text + ")";
+    if(sliderImage) {
+      var index = sliderImage.getAttribute("data-imageIndex");
+      var image = document._${id}_item.images[index];
+      var captionElement = imageSliderRootElement.querySelector(".q-imageslider-caption");
+      captionElement.childNodes[0].nodeValue = image.caption;
+      captionElement.childNodes[1].innerHTML = "";
+      if(image.credit) {
+        if(image.credit.link.url && image.credit.link.isValid) {
+          captionElement.childNodes[1].innerHTML = " (Bild: <a href='" + image.credit.link.url + "' target='blank' rel='noopener noreferrer'>" + image.credit.text + "</a>)";
+        } else if(image.credit.text) {
+          captionElement.childNodes[1].innerHTML = " (Bild: " + image.credit.text + ")";
+        }
       }
     }
   };`;
 
   const showSliderImageFunction = `
   function showSliderImage(sliderImage) {
-    sliderImage.classList.add("q-imageslider-image--is-visible");
-    sliderImage.classList.remove("q-imageslider-image--is-hidden");
+    if(sliderImage) {
+      sliderImage.classList.add("q-imageslider-image--is-visible");
+      sliderImage.classList.remove("q-imageslider-image--is-hidden");
+    }
   };`;
 
   const hideSliderImageFunction = `
   function hideSliderImage(sliderImage) {
-    sliderImage.classList.add("q-imageslider-image--is-hidden");
-    sliderImage.classList.remove("q-imageslider-image--is-visible");
+    if(sliderImage) {
+      sliderImage.classList.add("q-imageslider-image--is-hidden");
+      sliderImage.classList.remove("q-imageslider-image--is-visible");
+    }
   };`;
 
   const enableSliderButtonFunction = `
@@ -82,13 +89,11 @@ function getScript(id, item, imageServiceUrl) {
         hideSliderImage(sliderImages[0]);
         showSliderImage(sliderImages[1]);
         setCaption(imageSliderRootElement, sliderImages[1]);
-        setPaddingBottom(sliderImages[1]);
         trackImageSwitch(imageSliderRootElement, 1);
       } else {
         hideSliderImage(sliderImages[1]);
         showSliderImage(sliderImages[0]);
         setCaption(imageSliderRootElement, sliderImages[0]);
-        setPaddingBottom(sliderImages[0]);
         trackImageSwitch(imageSliderRootElement, 0);
       }
     });
@@ -113,7 +118,6 @@ function getScript(id, item, imageServiceUrl) {
           if(buttonIndex === imageIndex) {
             showSliderImage(sliderImage);
             setCaption(imageSliderRootElement, sliderImage);
-            setPaddingBottom(sliderImage);
             trackImageSwitch(imageSliderRootElement, imageIndex);
           } else {
             hideSliderImage(sliderImage);
@@ -123,11 +127,8 @@ function getScript(id, item, imageServiceUrl) {
     });
   }`;
 
-  const elementMarkup =
-    '<source type="image/webp" srcset="{webp1x} 1x, {webp2x} 2x"><source srcset="{image1x} 1x {image2x} 2x"><img class="q-imageslider-image" data-imageIndex="{index}" style="position:absolute; display:block; width:100%; opacity: {opacityValue};" src="{image1x}">';
-
-  const constructPictureElementFunction = `
-  function constructPictureElement(imageSliderRootElement, sliderImageElements, multiple) {
+  const loadImagesFunction = `
+  function loadImages(imageSliderRootElement, multiple) {
     if (!window.q_domready) {
       window.q_domready = new Promise(function(resolve) {
         if (document.readyState && (document.readyState === 'interactive' || document.readyState === 'complete')) {
@@ -148,65 +149,44 @@ function getScript(id, item, imageServiceUrl) {
     }
 
     window.q_domready.then(function() {
-      document._${id}_item.width = imageSliderRootElement.getBoundingClientRect().width;
-      sliderImageElements.forEach(function(sliderImage) {
-        var imageIndex = sliderImage.getAttribute("data-imageIndex");
-        var startImage = sliderImage.getAttribute("data-startImage");
-        var opacityValue = imageIndex === startImage ? 1 : 0;
-        var imageKey = sliderImage.getAttribute("data-imageKey");
-        var urls = getImageUrls(imageKey, document._${id}_item.width);
-        var innerHTMLPictureElement = '${elementMarkup}'.replace(/{image1x}/g, urls.image1x).replace(/{image2x}/g, urls.image2x).replace(/{webp1x}/g, urls.webp1x).replace(/{webp2x}/g, urls.webp2x).replace(/{index}/g, imageIndex).replace(/{opacityValue}/g, opacityValue);
-        sliderImage.innerHTML = innerHTMLPictureElement;
+      fetch("${toolBaseUrl}/rendering-info/web-images?${querystring.stringify(
+    queryParams
+  )}&width=" + imageSliderRootElement.getBoundingClientRect().width, {
+        method: "${method}",
+        ${requestBodyString ? "body: " + JSON.stringify(requestBodyString) : ""}
+      })
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(renderingInfo) {
+        if (renderingInfo.markup) {
+          document.querySelector("#${id} .q-imageslider-images").innerHTML = renderingInfo.markup;
+          if(multiple) {
+            addClickEventListenersMultiple(imageSliderRootElement);
+          } else {
+            addClickEventListeners(imageSliderRootElement);
+          }
+        }
       });
-      if(multiple) {
-        addClickEventListenersMultiple(imageSliderRootElement);
-      } else {
-        addClickEventListeners(imageSliderRootElement);
-      }
     });
-  }`;
-
-  const imageUrlFunction = `
-  function getFileExtension(imageKey) {
-    var fileExtensionPattern = /\.([0-9a-z]+$)/i;
-    var fileExtension = imageKey.match(fileExtensionPattern);
-    if(fileExtension && fileExtension[1] === "png") {
-      return "png";
-    }
-    return "pjpg";
-  }
-  function getImageUrl(imageKey, width, format) {
-    return '${imageServiceUrl}'.replace(/{key}/g, imageKey)
-      .replace(/{width}/g, width)
-      .replace(/{format}/g, format);
-  }
-  function getImageUrls(imageKey, width) {
-    return {
-      image1x: getImageUrl(imageKey, width, getFileExtension(imageKey)),
-      image2x: getImageUrl(imageKey, width * 2, getFileExtension(imageKey)),
-      webp1x: getImageUrl(imageKey, width, "webply"),
-      webp2x: getImageUrl(imageKey, width * 2, "webply")
-    };
   }`;
 
   const twoImagesScript = `
   function ${id}_initImageslider() {
     document._${id}_item = ${JSON.stringify(item)};
-    ${setPaddingBottomFunction}
     ${setCaptionFunction}
     ${showSliderImageFunction}
     ${hideSliderImageFunction}
     ${fireTrackingEventFunction}
     ${trackImageSwitchFunction}
     ${addClickEventListenersFunction}
-    ${imageUrlFunction}
-    ${constructPictureElementFunction}
+    ${loadImagesFunction}
 
     var imageSliderRootElement = document.querySelector("#${id}");
-    var sliderImageElements = Array.prototype.slice.call(imageSliderRootElement.querySelector(".q-imageslider-image-container").children);
+    var sliderImageElements = Array.prototype.slice.call(imageSliderRootElement.querySelector(".q-imageslider-images").children);
     // Construct picture element on client side if not already done on server-side
-    if(sliderImageElements[0].children.length === 0) {
-      constructPictureElement(imageSliderRootElement, sliderImageElements, false);
+    if(sliderImageElements.length === 0) {
+      loadImages(imageSliderRootElement, false);
     } else {
       addClickEventListeners(imageSliderRootElement);
     }
@@ -216,7 +196,6 @@ function getScript(id, item, imageServiceUrl) {
   const multipleImagesScript = `
   function ${id}_initImageslider() {
     document._${id}_item = ${JSON.stringify(item)};
-    ${setPaddingBottomFunction}
     ${setCaptionFunction}
     ${showSliderImageFunction}
     ${hideSliderImageFunction}
@@ -225,14 +204,13 @@ function getScript(id, item, imageServiceUrl) {
     ${fireTrackingEventFunction}
     ${trackImageSwitchFunction}
     ${addClickEventListenersMultipleFunction}
-    ${imageUrlFunction}
-    ${constructPictureElementFunction}
+    ${loadImagesFunction}
 
     var imageSliderRootElement = document.querySelector("#${id}");
-    var sliderImageElements = Array.prototype.slice.call(imageSliderRootElement.querySelector(".q-imageslider-image-container").children);
+    var sliderImageElements = Array.prototype.slice.call(imageSliderRootElement.querySelector(".q-imageslider-images").children);
     // Construct picture element on client side if not already done on server-side
-    if(sliderImageElements[0].children.length === 0) {
-      constructPictureElement(imageSliderRootElement, sliderImageElements, true);
+    if(sliderImageElements.length === 0) {
+      loadImages(imageSliderRootElement, true);
     } else {
       addClickEventListenersMultiple(imageSliderRootElement);
     }
