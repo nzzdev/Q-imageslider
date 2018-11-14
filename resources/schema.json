@@ -79,9 +79,7 @@
               "availabilityChecks": [
                 {
                   "type": "UserHasRole",
-                  "config": {
-                    "role": "expert-imageslider"
-                  }
+                  "role": "expert-imageslider"
                 }
               ]
             }
@@ -139,10 +137,8 @@
           "Q:options": {
             "dynamicEnum": {
               "type": "ToolEndpoint",
-              "config": {
-                "endpoint": "dynamic-enum/startImage",
-                "fields": ["images"]
-              }
+              "withData": true,
+              "endpoint": "dynamic-enum/startImage"
             }
           }
         }
