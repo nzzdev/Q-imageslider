@@ -1,4 +1,3 @@
-const fs = require("fs");
 const Lab = require("lab");
 const Code = require("code");
 const Hapi = require("hapi");
@@ -33,7 +32,7 @@ after(async () => {
   server = null;
 });
 
-lab.experiment("basic routes", () => {
+lab.experiment("basics", () => {
   it("starts the server", () => {
     expect(server.info.created).to.be.a.number();
   });
@@ -44,19 +43,59 @@ lab.experiment("basic routes", () => {
   });
 });
 
-lab.experiment("rendering-info", () => {
-  const fixture = JSON.parse(
-    fs.readFileSync(`${__dirname}/../resources/fixtures/data/two-images.json`, {
-      encoding: "utf-8"
-    })
+lab.experiment("schema endpoint", () => {
+  it("returns 200 for /schema.json", async () => {
+    const response = await server.inject("/schema.json");
+    expect(response.statusCode).to.be.equal(200);
+  });
+});
+
+lab.experiment("locales endpoint", () => {
+  it("returns 200 for en translations", async () => {
+    const request = {
+      method: "GET",
+      url: "/locales/en/translation.json"
+    };
+    const response = await server.inject(request);
+    expect(response.statusCode).to.be.equal(200);
+  });
+  it("returns 200 for fr translations", async () => {
+    const request = {
+      method: "GET",
+      url: "/locales/fr/translation.json"
+    };
+    const response = await server.inject(request);
+    expect(response.statusCode).to.be.equal(200);
+  });
+});
+
+lab.experiment("stylesheets endpoint", () => {
+  it(
+    "returns existing stylesheet with right cache control header",
+    { plan: 2 },
+    async () => {
+      const filename = require("../styles/hashMap.json").default;
+      const response = await server.inject(`/stylesheet/${filename}`);
+      expect(response.statusCode).to.be.equal(200);
+      expect(response.headers["cache-control"]).to.be.equal(
+        "max-age=31536000, immutable"
+      );
+    }
   );
 
+  it("returns Not Found when requesting an inexisting stylesheet", async () => {
+    const response = await server.inject("/stylesheet/inexisting.123.css");
+    expect(response.statusCode).to.be.equal(404);
+  });
+});
+
+lab.experiment("rendering-info endpoint", () => {
   it("returns 200 for /rendering-info/web", async () => {
     const request = {
       method: "POST",
       url: "/rendering-info/web",
       payload: {
-        item: fixture,
+        item: require("../resources/fixtures/data/two-images.json"),
         toolRuntimeConfig: {
           displayOptions: {}
         }
@@ -64,5 +103,13 @@ lab.experiment("rendering-info", () => {
     };
     const response = await server.inject(request);
     expect(response.statusCode).to.be.equal(200);
+  });
+});
+
+lab.experiment("fixture data endpoint", () => {
+  it("returns 15 fixture data items for /fixtures/data", async () => {
+    const response = await server.inject("/fixtures/data");
+    expect(response.statusCode).to.be.equal(200);
+    expect(response.result.length).to.be.equal(15);
   });
 });

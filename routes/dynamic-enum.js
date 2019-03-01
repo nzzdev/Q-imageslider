@@ -34,10 +34,11 @@ module.exports = {
     cors: true
   },
   handler: function(request, h) {
+    const item = request.payload.item;
     if (request.params.optionName === "startImage") {
       return {
-        enum: getStartImageEnum(request.payload),
-        enum_titles: getStartImageEnumTitles(request.payload)
+        enum: getStartImageEnum(item),
+        enum_titles: getStartImageEnumTitles(item)
       };
     }
 
