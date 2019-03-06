@@ -95,7 +95,7 @@ module.exports = {
       if (variant) {
         // gets the necessary url strings to build the picture element
         image.urls = imageHelpers.getImageUrls(
-          variant.file.key,
+          variant.file,
           request.query.width
         );
       }

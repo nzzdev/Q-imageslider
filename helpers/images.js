@@ -24,19 +24,23 @@ function getVariantForWidth(variants, width) {
   });
 }
 
-function getImageUrls(imageKey, width) {
+function getImageUrls(image, width) {
   return {
-    image1x: getImageUrl(imageKey, width, getFileExtension(imageKey)),
-    image2x: getImageUrl(imageKey, width * 2, getFileExtension(imageKey)),
-    webp1x: getImageUrl(imageKey, width, "webply"),
-    webp2x: getImageUrl(imageKey, width * 2, "webply")
+    image1x: getImageUrl(image, width, getFileExtension(image.key)),
+    image2x: getImageUrl(image, width * 2, getFileExtension(image.key)),
+    webp1x: getImageUrl(image, width, "webply"),
+    webp2x: getImageUrl(image, width * 2, "webply")
   };
 }
 
-function getImageUrl(imageKey, width, format) {
-  return process.env.IMAGE_SERVICE_URL.replace("{key}", imageKey)
-    .replace("{width}", width)
-    .replace("{format}", format);
+function getImageUrl(image, width, format) {
+  if (process.env.IMAGE_SERVICE_URL) {
+    return process.env.IMAGE_SERVICE_URL.replace("{key}", image.key)
+      .replace("{width}", width)
+      .replace("{format}", format);
+  } else {
+    return image.url;
+  }
 }
 
 function getFileExtension(imageKey) {
