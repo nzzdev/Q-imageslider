@@ -58,7 +58,7 @@ The testing framework used in this repository is [Code](https://github.com/hapij
 Run the tests:
 
 ```
-$ npm run test
+npm run test
 ```
 
 ### Implementing a new test
@@ -102,6 +102,8 @@ There are 2 places where this route is called from.
 2. From the client side script returned from `/rendering-info/web` if no exact width is given
 
 This route handler renders the `view/images.html` template and returns a `<picture>` element containing different `<source>` elements for the image in different sizes for different screen DPI and png/webp.
+
+[to the top](#table-of-contents)
 
 ### Options
 
