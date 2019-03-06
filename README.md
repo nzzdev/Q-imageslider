@@ -3,7 +3,7 @@
 **Maintainer**: [manuelroth](https://github.com/manuelroth)
 
 Q Imageslider is one tool of the Q toolbox to compare images with eachother.
-Test it in the demo: https://editor.q.tools
+Test it in the [demo](https://editor.q.tools).
 
 ## Table of contents
 
@@ -37,13 +37,18 @@ If `IMAGE_SERVICE_URL` is not configured, the `image.url` property is used direc
 
 ## Development
 
+Start the Q dev server:
+
 ```
-nvm use
-npm install
+npx @nzz/q-cli server
 ```
 
-Make sure to build at least once: `npm run build`.
-Run the tool with `node index.js`.
+Run the Q tool:
+
+```
+node index.js
+```
+
 [to the top](#table-of-contents)
 
 ## Testing
