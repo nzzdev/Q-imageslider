@@ -11,16 +11,18 @@ Test it in the demo: https://editor.q.tools
 - [Configuration](#configuration)
 - [Development](#development)
 - [Testing](#testing)
-- [Tool implementation details](#tool-implementation-details)
-- [Features](#features)
-- [Options](#options)
+- [Deployment](#deployment)
+- [Functionality](#functionality)
+- [License](#license)
 
 ## Installation
 
 ```bash
-$ nvm use
-$ npm install
-$ npm run build
+git clone git@github.com:nzzdev/Q-imageslider.git
+cd Q-imageslider
+nvm use
+npm install
+npm run build
 ```
 
 ## Configuration
@@ -63,15 +65,25 @@ When changing or implementing...
 
 [to the top](#table-of-contents)
 
-## Tool implentation details
+## Deployment
+
+We provide automatically built docker images at https://hub.docker.com/r/nzzonline/q-imageslider/.
+There are three options for deployment:
+
+- Use the provided images
+- Build your own docker images
+- Deploy the service using another technology
+
+### Use the provided docker images
+
+1. Deploy `nzzonline/q-imageslider` to a docker environment
+2. Set the ENV variables as described in the [configuration section](#configuration)
+
+## Functionality
 
 The tool structure follows the general structure of each Q tool. Further information can be found in [Q server documentation - Developing tools](https://nzzdev.github.io/Q-server/developing-tools.html).
 
-[to the top](#table-of-contents)
-
-## Features
-
-There are 2 endpoints for renderingInfo.
+There are 2 endpoints for renderingInfo:
 
 ### `/rendering-info/web`
 
@@ -86,9 +98,9 @@ There are 2 places where this route is called from.
 
 This route handler renders the `view/images.html` template and returns a `<picture>` element containing different `<source>` elements for the image in different sizes for different screen DPI and png/webp.
 
-## Options
+### Options
 
-### startImage
+#### startImage
 
 This is a `dynamicEnum` and stores the index of the image to be shown initially. You can select something here to not start with the first image when the imageslider gets loaded.
 
