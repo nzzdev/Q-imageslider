@@ -111,6 +111,12 @@ This route handler renders the `view/images.html` template and returns a `<pictu
 
 This is a `dynamicEnum` and stores the index of the image to be shown initially. You can select something here to not start with the first image when the imageslider gets loaded.
 
+#### displayOptions
+
+##### hideTitle
+
+If checked, the title is not rendered.
+
 [to the top](#table-of-contents)
 
 ## LICENSE
