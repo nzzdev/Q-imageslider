@@ -3,6 +3,8 @@ const Code = require("code");
 const Hapi = require("hapi");
 const lab = (exports.lab = Lab.script());
 
+const glob = require("glob");
+
 const expect = Code.expect;
 const before = lab.before;
 const after = lab.after;
@@ -89,27 +91,86 @@ lab.experiment("stylesheets endpoint", () => {
   });
 });
 
-lab.experiment("rendering-info endpoint", () => {
-  it("returns 200 for /rendering-info/web", async () => {
-    const request = {
-      method: "POST",
-      url: "/rendering-info/web",
-      payload: {
-        item: require("../resources/fixtures/data/two-images.json"),
-        toolRuntimeConfig: {
-          displayOptions: {}
-        }
-      }
-    };
-    const response = await server.inject(request);
-    expect(response.statusCode).to.be.equal(200);
-  });
-});
-
 lab.experiment("fixture data endpoint", () => {
   it("returns 15 fixture data items for /fixtures/data", async () => {
     const response = await server.inject("/fixtures/data");
     expect(response.statusCode).to.be.equal(200);
     expect(response.result.length).to.be.equal(15);
+  });
+});
+
+// all the fixtures render
+lab.experiment("all fixtures render", async () => {
+  const fixtureFiles = glob.sync(
+    `${__dirname}/../resources/fixtures/data/*.json`
+  );
+  for (let fixtureFile of fixtureFiles) {
+    const fixture = require(fixtureFile);
+    it(`doesnt fail in rendering fixture ${fixture.title}`, async () => {
+      const request = {
+        method: "POST",
+        url: "/rendering-info/web",
+        payload: {
+          item: fixture,
+          toolRuntimeConfig: {}
+        }
+      };
+      const response = await server.inject(request);
+      expect(response.statusCode).to.be.equal(200);
+    });
+  }
+});
+
+lab.experiment("rendering-info", async () => {
+  it("web: returns error 400 if invalid item is given", async () => {
+    const request = {
+      method: "POST",
+      url: "/rendering-info/web",
+      payload: {
+        item: {
+          some: "object",
+          that: "doesn't validate against the schema"
+        },
+        toolRuntimeConfig: {}
+      }
+    };
+    const response = await server.inject(request);
+    expect(response.statusCode).to.be.equal(400);
+  });
+
+  it("web-images: returns error 400 if invalid item is given", async () => {
+    const request = {
+      method: "POST",
+      url: "/rendering-info/web-images?width=200",
+      payload: {
+        item: "invalid"
+      }
+    };
+    const response = await server.inject(request);
+    expect(response.statusCode).to.be.equal(400);
+  });
+
+  it("web-images: returns error 400 if no width is given", async () => {
+    const request = {
+      method: "POST",
+      url: "/rendering-info/web-images",
+      payload: {
+        item: require(`${__dirname}/../resources/fixtures/data/two-images.json`)
+      }
+    };
+    const response = await server.inject(request);
+    expect(response.statusCode).to.be.equal(400);
+  });
+
+  it("web-images: returns status 200 if valid item and width is given", async () => {
+    const request = {
+      method: "POST",
+      url: "/rendering-info/web-images?width=400",
+      payload: {
+        item: require(`${__dirname}/../resources/fixtures/data/two-images.json`)
+      }
+    };
+    const response = await server.inject(request);
+    expect(response.statusCode).to.be.equal(200);
   });
 });
