@@ -1,5 +1,5 @@
-const Boom = require("boom");
-const Joi = require("joi");
+const Boom = require("@hapi/boom");
+const Joi = require("@hapi/joi");
 const fs = require("fs");
 const path = require("path");
 
@@ -20,9 +20,6 @@ const schemaString = JSON.parse(
 );
 const Ajv = require("ajv");
 const ajv = new Ajv();
-
-// add draft-04 support explicit
-ajv.addMetaSchema(require("ajv/lib/refs/json-schema-draft-04.json"));
 
 const validate = ajv.compile(schemaString);
 function validateAgainstSchema(item, options) {
@@ -95,7 +92,7 @@ module.exports = {
       if (variant) {
         // gets the necessary url strings to build the picture element
         image.urls = imageHelpers.getImageUrls(
-          variant.file.key,
+          variant.file,
           request.query.width
         );
       }

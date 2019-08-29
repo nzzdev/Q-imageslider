@@ -62,10 +62,11 @@ function getScript(
   function fireTrackingEvent(imageSliderRootElement, itemId) {
     // dispatch CustomEvent on next-image for tracking
     // or anyone else interested in it
-    var imageSliderControlEvent = new CustomEvent('q-imageslider-next-image', {
+    var imageSliderControlEvent = new CustomEvent('q-tracking-event', {
       bubbles: true,
       detail: {
-        id: itemId
+        id: itemId,
+        eventAction: "q-imageslider-next-image"
       }
     });
     imageSliderRootElement.dispatchEvent(imageSliderControlEvent);

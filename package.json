@@ -1,30 +1,32 @@
 {
   "name": "Q-imageslider",
-  "version": "1.3.1",
+  "version": "1.4.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "build": "rm -rf styles && mkdir styles && node tasks/build.js",
-    "test": "lab -a code -c -P tests --verbose --leaks"
+    "test": "lab -a @hapi/code -c -P tests --verbose --leaks"
   },
   "author": "",
-  "license": "",
+  "license": "MIT",
   "dependencies": {
-    "autoprefixer": "^9.4.9",
-    "boom": "^7.2.0",
-    "cssnano": "^4.1.10",
-    "hapi": "^18.1.0",
-    "inert": "^5.1.0",
-    "joi": "^14.3.1",
-    "node-sass": "^4.9.4",
-    "nunjucks": "^3.1.3",
-    "postcss": "^7.0.14",
-    "postcss-import": "^12.0.1",
-    "uglify-js": "^3.4.9"
+    "@hapi/hapi": "^18.3.1",
+    "@hapi/boom": "^7.4.2",
+    "@hapi/inert": "^5.2.0",
+    "@hapi/joi": "^15.0.0",
+    "ajv": "^6.10.0",
+    "nunjucks": "^3.2.0",
+    "uglify-js": "^3.5.4"
   },
   "devDependencies": {
-    "code": "^5.2.4",
-    "jsdom": "^13.1.0",
-    "lab": "^18.0.1"
+    "@hapi/lab": "^19.0.0",
+    "@hapi/code": "^5.3.1",
+    "autoprefixer": "^9.5.1",
+    "cssnano": "^4.1.10",
+    "glob": "^7.1.3",
+    "jsdom": "^15.0.0",
+    "postcss": "^7.0.14",
+    "postcss-import": "^12.0.1",
+    "sass": "^1.19.0"
   }
 }
