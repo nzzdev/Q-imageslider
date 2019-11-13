@@ -91,3 +91,15 @@
 .s-input-switch {
   margin-bottom: 10px;
 }
+
+@media (max-width: 768px) {
+  .q-embed.widget--fullwidth .s-q-item .q-imageslider-switch-container {
+    margin-left: 24px;
+    margin-right: 24px;
+  }
+
+  .q-embed.widget--fullwidth .s-q-item .q-imageslider-images {
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+  }
+}
