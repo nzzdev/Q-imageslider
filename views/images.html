@@ -32,12 +32,22 @@
 		</picture>
 		{% endif %} {%- endfor %}
 	</div>
-	<p class="q-imageslider-caption s-font-note s-font-note--light">
-		{{ startImage.caption }}
-		<span>
-			{%- if startImage.credit.text %} {%- if startImage.credit.link.url and startImage.credit.link.isValid %} (Bild: <a href="{{ startImage.credit.link.url }}"
-			 target="blank" rel="noopener noreferrer">{{ startImage.credit.text }}</a>) {%- else %} (Bild: {{ startImage.credit.text
-			}}) {%- endif %} {%- endif %}
-		</span>
-	</p>
+	{%- if startImage.caption or startImage.credit.text %}
+		<div class="q-imageslider-description {% if isWide %}q-imageslider-description--wide{% endif %}">
+			<span class="s-font-note">
+				{{ startImage.caption }}
+			</span>
+			<div class="q-imageslider-description__author {% if isWide %}q-imageslider-description__author--wide{% endif %} s-font-note-s s-color-gray-7">
+				<span>
+					{%- if startImage.credit.text %}
+						{%- if startImage.credit.link.url and startImage.credit.link.isValid %}
+							<a href="{{ startImage.credit.link.url }}" target="blank" rel="noopener noreferrer">{{ startImage.credit.text }}</a>
+						{%- else %}
+							{{ startImage.credit.text }}
+						{%- endif %}
+					{%- endif %}
+				</span>
+			</div>
+		</div>
+	{%- endif %}
 </div>

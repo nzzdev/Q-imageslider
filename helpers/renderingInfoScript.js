@@ -13,14 +13,14 @@ function getScript(
     if(sliderImage) {
       var index = sliderImage.getAttribute("data-imageIndex");
       var image = document._${id}_item.images[index];
-      var captionElement = imageSliderRootElement.querySelector(".q-imageslider-caption");
+      var captionElement = imageSliderRootElement.querySelector(".q-imageslider-description");
       captionElement.childNodes[0].nodeValue = image.caption;
       captionElement.childNodes[1].innerHTML = "";
       if(image.credit) {
         if(image.credit.link.url && image.credit.link.isValid) {
-          captionElement.childNodes[1].innerHTML = " (Bild: <a href='" + image.credit.link.url + "' target='blank' rel='noopener noreferrer'>" + image.credit.text + "</a>)";
+          captionElement.childNodes[1].innerHTML = "<a href='" + image.credit.link.url + "' target='blank' rel='noopener noreferrer'>" + image.credit.text + "</a>";
         } else if(image.credit.text) {
-          captionElement.childNodes[1].innerHTML = " (Bild: " + image.credit.text + ")";
+          captionElement.childNodes[1].innerHTML = image.credit.text;
         }
       }
     }

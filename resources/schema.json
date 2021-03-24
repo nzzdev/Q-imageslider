@@ -100,7 +100,10 @@
             "properties": {
               "text": {
                 "title": "Credit",
-                "type": "string"
+                "type": "string",
+                "Q:options": {
+                  "placeholder": "[Vorname Nachname] / [Agentur]"
+                }
               },
               "link": {
                 "Q:type": "link",
