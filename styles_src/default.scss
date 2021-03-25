@@ -96,13 +96,10 @@
 }
 
 .q-imageslider-description__author {
-  margin-top: 4px;
+  line-height: 20px;
   
   &--wide {
-    display: flex;
     flex-shrink: 0;
-    flex-direction: column;
-    margin-top: 0;
     margin-left: 16px;
     text-align: right;
     width: 160px;
