@@ -109,13 +109,13 @@
                 "Q:type": "link",
                 "title": "Link",
                 "type": "object",
+                "Q:options": {
+                  "placeholder": "Direktlink zum Fotografen"
+                },
                 "properties": {
                   "url": {
                     "title": "Link",
-                    "type": "string",
-                    "Q:options": {
-                      "placeholder": "Direktlink zum Fotografen, http://..."
-                    }
+                    "type": "string"
                   },
                   "isValid": {
                     "type": "boolean"
