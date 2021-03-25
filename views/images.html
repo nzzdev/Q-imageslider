@@ -41,7 +41,7 @@
 				<span>
 					{%- if startImage.credit.text %}
 						{%- if startImage.credit.link.url and startImage.credit.link.isValid %}
-							<a href="{{ startImage.credit.link.url }}" target="blank" rel="noopener noreferrer">{{ startImage.credit.text }}</a>
+							<a class="q-imageslider-description__author__url" href="{{ startImage.credit.link.url }}" target="blank" rel="noopener noreferrer">{{ startImage.credit.text }}</a>
 						{%- else %}
 							{{ startImage.credit.text }}
 						{%- endif %}
