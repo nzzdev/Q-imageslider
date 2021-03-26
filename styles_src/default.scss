@@ -83,9 +83,27 @@
   top: -15px;
 }
 
-.q-imageslider-caption {
-  margin-top: 8px;
+.q-imageslider-description {
+  display: flex;
+  flex-direction: column;
+  margin-top: 16px;
   margin-bottom: 0;
+
+  &--wide {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+.q-imageslider-description__author {
+  line-height: 20px;
+  
+  &--wide {
+    flex-shrink: 0;
+    margin-left: 16px;
+    text-align: right;
+    width: 160px;
+  }
 }
 
 .s-input-switch {
