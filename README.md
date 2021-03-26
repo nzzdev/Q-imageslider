@@ -1,4 +1,4 @@
-# Q Imageslider [![Build Status](https://travis-ci.com/nzzdev/Q-imageslider.svg?token=tYv1sxPNiVKviBpSHziC&branch=dev)](https://travis-ci.com/nzzdev/Q-imageslider) [![Greenkeeper badge](https://badges.greenkeeper.io/nzzdev/Q-imageslider.svg?token=c13e57507403fee0c64955a752faf93fdcb6f5b553ec0165e3ed886447a411b9&ts=1551342785963)](https://greenkeeper.io/)
+# Q Imageslider [![Build Status](https://travis-ci.com/nzzdev/Q-imageslider.svg?token=tYv1sxPNiVKviBpSHziC&branch=dev)](https://travis-ci.com/nzzdev/Q-imageslider)
 
 **Maintainer**: [manuelroth](https://github.com/manuelroth)
 

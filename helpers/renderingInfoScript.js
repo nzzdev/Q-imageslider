@@ -8,20 +8,42 @@ function getScript(
   queryParams,
   requestBodyString
 ) {
+  const showOrHideCaptionFunction = `
+  function showOrHideCaption(imageSliderRootElement, sliderImage) {
+    if(!sliderImage) return;
+
+    var index = sliderImage.getAttribute("data-imageIndex");
+    var image = document._${id}_item.images[index];
+    var caption = imageSliderRootElement.querySelector(".q-imageslider-description__caption");
+    var author = imageSliderRootElement.querySelector(".q-imageslider-description__author");
+    
+    if (image.caption || (image.credit && image.credit.text)) {
+      imageSliderRootElement.querySelector(".q-imageslider-description").style.display = "flex";
+    } else {
+      imageSliderRootElement.querySelector(".q-imageslider-description").style.display = "none";
+    }
+  };`;
+
   const setCaptionFunction = `
   function setCaption(imageSliderRootElement, sliderImage) {
-    if(sliderImage) {
-      var index = sliderImage.getAttribute("data-imageIndex");
-      var image = document._${id}_item.images[index];
-      var captionElement = imageSliderRootElement.querySelector(".q-imageslider-caption");
-      captionElement.childNodes[0].nodeValue = image.caption;
-      captionElement.childNodes[1].innerHTML = "";
-      if(image.credit) {
-        if(image.credit.link.url && image.credit.link.isValid) {
-          captionElement.childNodes[1].innerHTML = " (Bild: <a href='" + image.credit.link.url + "' target='blank' rel='noopener noreferrer'>" + image.credit.text + "</a>)";
-        } else if(image.credit.text) {
-          captionElement.childNodes[1].innerHTML = " (Bild: " + image.credit.text + ")";
-        }
+    if (!sliderImage) return;
+
+    var index = sliderImage.getAttribute("data-imageIndex");
+    var image = document._${id}_item.images[index];
+    var caption = imageSliderRootElement.querySelector(".q-imageslider-description__caption");
+    var author = imageSliderRootElement.querySelector(".q-imageslider-description__author");
+    
+    caption.innerHTML = "";
+    if (image.caption) {
+      caption.innerHTML = image.caption;
+    }
+
+    author.innerHTML = "";
+    if(image.credit) {
+      if(image.credit.link.url && image.credit.link.isValid) {
+        author.innerHTML = "<a class='q-imageslider-description__author__url' href='" + image.credit.link.url + "' target='blank' rel='noopener noreferrer'>" + image.credit.text + "</a>";
+      } else if(image.credit.text) {
+        author.innerHTML = image.credit.text;
       }
     }
   };`;
@@ -85,15 +107,20 @@ function getScript(
   function addClickEventListeners(imageSliderRootElement) {
     var sliderSwitch = imageSliderRootElement.querySelector(".q-imageslider-switch");
     var sliderImages = imageSliderRootElement.querySelectorAll(".q-imageslider-image");
+
+    showOrHideCaption(imageSliderRootElement, sliderImages[0]);
+
     sliderSwitch.addEventListener("change", function() {
       if(this.checked) {
         hideSliderImage(sliderImages[0]);
         showSliderImage(sliderImages[1]);
+        showOrHideCaption(imageSliderRootElement, sliderImages[1]);
         setCaption(imageSliderRootElement, sliderImages[1]);
         trackImageSwitch(imageSliderRootElement, 1);
       } else {
         hideSliderImage(sliderImages[1]);
         showSliderImage(sliderImages[0]);
+        showOrHideCaption(imageSliderRootElement, sliderImages[0]);
         setCaption(imageSliderRootElement, sliderImages[0]);
         trackImageSwitch(imageSliderRootElement, 0);
       }
@@ -104,6 +131,9 @@ function getScript(
   function addClickEventListenersMultiple(imageSliderRootElement) {
     var sliderButtons = imageSliderRootElement.querySelectorAll(".q-imageslider-button");
     var sliderImages = imageSliderRootElement.querySelectorAll(".q-imageslider-image");
+
+    showOrHideCaption(imageSliderRootElement, sliderImages[0]);
+
     sliderButtons.forEach(function(sliderButton, buttonIndex) {
       sliderButton.addEventListener("click", function() {
         // Set selected state on sliderButtons
@@ -118,6 +148,7 @@ function getScript(
         sliderImages.forEach(function(sliderImage, imageIndex) {
           if(buttonIndex === imageIndex) {
             showSliderImage(sliderImage);
+            showOrHideCaption(imageSliderRootElement, sliderImage);
             setCaption(imageSliderRootElement, sliderImage);
             trackImageSwitch(imageSliderRootElement, imageIndex);
           } else {
@@ -175,6 +206,7 @@ function getScript(
   const twoImagesScript = `
   function ${id}_initImageslider() {
     document._${id}_item = ${JSON.stringify(item)};
+    ${showOrHideCaptionFunction}
     ${setCaptionFunction}
     ${showSliderImageFunction}
     ${hideSliderImageFunction}
@@ -197,6 +229,7 @@ function getScript(
   const multipleImagesScript = `
   function ${id}_initImageslider() {
     document._${id}_item = ${JSON.stringify(item)};
+    ${showOrHideCaptionFunction}
     ${setCaptionFunction}
     ${showSliderImageFunction}
     ${hideSliderImageFunction}
