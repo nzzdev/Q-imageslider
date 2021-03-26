@@ -101,7 +101,8 @@ module.exports = {
     const context = {
       item: item,
       startImage: item.images[item.options.startImage],
-      paddingBottom: imageHelpers.getPaddingBottom(matchingVariants)
+      paddingBottom: imageHelpers.getPaddingBottom(matchingVariants),
+      isWide: request.query.width < 400 ? false : true
     };
 
     let markup;
