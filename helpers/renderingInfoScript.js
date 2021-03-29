@@ -39,13 +39,11 @@ function getScript(
     }
 
     author.innerHTML = "";
-    if(image.credit) {
-      if(image.credit.text) {
-        if(image.credit.link && image.credit.link.url && image.credit.link.isValid) {
-          author.innerHTML = "<a class='q-imageslider-description__author__url' href='" + image.credit.link.url + "' target='blank' rel='noopener noreferrer'>" + image.credit.text + "</a>";
-        } else {
-          author.innerHTML = image.credit.text;
-        }  
+    if(image.credit && image.credit.text) {
+      if(image.credit.link && image.credit.link.url && image.credit.link.isValid) {
+        author.innerHTML = "<a class='q-imageslider-description__author__url' href='" + image.credit.link.url + "' target='blank' rel='noopener noreferrer'>" + image.credit.text + "</a>";
+      } else {
+        author.innerHTML = image.credit.text;
       }
     }
   };`;
