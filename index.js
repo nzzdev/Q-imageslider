@@ -3,14 +3,15 @@ const Hapi = require("@hapi/hapi");
 const server = Hapi.server({
   port: process.env.PORT || 3000,
   routes: {
-    cors: true
-  }
+    cors: true,
+  },
 });
 
 const routes = require("./routes/routes.js");
 
 async function init() {
   await server.register(require("@hapi/inert"));
+  server.validator(require("joi"));
   server.route(routes);
   await server.start();
   console.log("server running ", server.info.uri);

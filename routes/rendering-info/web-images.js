@@ -1,5 +1,5 @@
 const Boom = require("@hapi/boom");
-const Joi = require("@hapi/joi");
+const Joi = require("joi");
 const fs = require("fs");
 const path = require("path");
 
@@ -15,7 +15,7 @@ const nunjucksEnv = new nunjucks.Environment();
 // hence we fetch the JSON schema...
 const schemaString = JSON.parse(
   fs.readFileSync(path.join(__dirname, "../../resources/", "schema.json"), {
-    encoding: "utf-8"
+    encoding: "utf-8",
   })
 );
 const Ajv = require("ajv");
@@ -46,24 +46,24 @@ module.exports = {
   options: {
     validate: {
       options: {
-        allowUnknown: true
+        allowUnknown: true,
       },
       query: {
         width: Joi.number().required(),
         noCache: Joi.boolean(),
-        toolRuntimeConfig: Joi.object().optional()
+        toolRuntimeConfig: Joi.object().optional(),
       },
-      payload: validatePayload
-    }
+      payload: validatePayload,
+    },
   },
-  handler: async function(request, h) {
+  handler: async function (request, h) {
     const item = request.payload.item;
     const matchingVariants = [];
     for (let image of item.images) {
       let variants = [];
       if (image.variants && image.variants.length > 0) {
         // Only consider variants which have a file key
-        variants = image.variants.filter(variant => {
+        variants = image.variants.filter((variant) => {
           return variant.file && variant.file.key;
         });
       }
@@ -71,7 +71,7 @@ module.exports = {
         // puts top level image with minWidth 0 to the beginning of the variants array
         variants.unshift({
           minWidth: 0,
-          file: image.file
+          file: image.file,
         });
       }
 
@@ -102,7 +102,7 @@ module.exports = {
       item: item,
       startImage: item.images[item.options.startImage],
       paddingBottom: imageHelpers.getPaddingBottom(matchingVariants),
-      isWide: request.query.width < 400 ? false : true
+      isWide: request.query.width < 400 ? false : true,
     };
 
     let markup;
@@ -114,9 +114,9 @@ module.exports = {
     }
 
     const renderingInfo = {
-      markup: markup
+      markup: markup,
     };
 
     return renderingInfo;
-  }
+  },
 };

@@ -21,10 +21,11 @@ before(async () => {
     server = Hapi.server({
       port: process.env.PORT || 3000,
       routes: {
-        cors: true
-      }
+        cors: true,
+      },
     });
     await server.register(require("@hapi/inert"));
+    server.validator(require("joi"));
     server.route(routes);
   } catch (err) {
     expect(err).to.not.exist();
@@ -57,12 +58,12 @@ lab.experiment("Q imageslider dom tests", () => {
       method: "POST",
       payload: {
         item: require("../resources/fixtures/data/three-images.json"),
-        toolRuntimeConfig: {}
-      }
+        toolRuntimeConfig: {},
+      },
     });
 
     return elementCount(response.result.markup, "h3.s-q-item__title").then(
-      value => {
+      (value) => {
         expect(value).to.be.equal(1);
       }
     );
@@ -74,14 +75,14 @@ lab.experiment("Q imageslider dom tests", () => {
       method: "POST",
       payload: {
         item: require("../resources/fixtures/data/three-images.json"),
-        toolRuntimeConfig: {}
-      }
+        toolRuntimeConfig: {},
+      },
     });
 
     return elementCount(
       response.result.markup,
       "div.q-imageslider-images"
-    ).then(value => {
+    ).then((value) => {
       expect(value).to.be.equal(1);
     });
   });
