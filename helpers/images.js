@@ -1,11 +1,11 @@
 function getMinWidths(variants) {
-  return variants.map(variant => {
+  return variants.map((variant) => {
     return variant.minWidth;
   });
 }
 
 function getValidMinWidths(variants, width) {
-  return getMinWidths(variants).filter(minWidth => {
+  return getMinWidths(variants).filter((minWidth) => {
     return width >= minWidth;
   });
 }
@@ -19,7 +19,7 @@ function getVariantForWidth(variants, width) {
   })[0];
 
   // return the first variant with widest valid minWidth
-  return variants.find(variant => {
+  return variants.find((variant) => {
     return variant.minWidth === widestValidMinWidth;
   });
 }
@@ -28,8 +28,12 @@ function getImageUrls(image, width) {
   return {
     image1x: getImageUrl(image, width, getFileExtension(image.key)),
     image2x: getImageUrl(image, width * 2, getFileExtension(image.key)),
+    image3x: getImageUrl(image, width * 3, getFileExtension(image.key)),
+    image4x: getImageUrl(image, width * 4, getFileExtension(image.key)),
     webp1x: getImageUrl(image, width, "webply"),
-    webp2x: getImageUrl(image, width * 2, "webply")
+    webp2x: getImageUrl(image, width * 2, "webply"),
+    webp3x: getImageUrl(image, width * 3, "webply"),
+    webp4x: getImageUrl(image, width * 4, "webply"),
   };
 }
 
@@ -73,5 +77,5 @@ function getPaddingBottom(matchingVariants) {
 module.exports = {
   getImageUrls: getImageUrls,
   getVariantForWidth: getVariantForWidth,
-  getPaddingBottom: getPaddingBottom
+  getPaddingBottom: getPaddingBottom,
 };

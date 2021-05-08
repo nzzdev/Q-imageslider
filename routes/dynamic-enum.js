@@ -1,5 +1,5 @@
 const Boom = require("@hapi/boom");
-const Joi = require("@hapi/joi");
+const Joi = require("joi");
 
 function getStartImageEnum(item) {
   if (item.images.length < 2) {
@@ -29,19 +29,19 @@ module.exports = {
   path: "/dynamic-enum/{optionName}",
   options: {
     validate: {
-      payload: Joi.object()
+      payload: Joi.object(),
     },
-    cors: true
+    cors: true,
   },
-  handler: function(request, h) {
+  handler: function (request, h) {
     const item = request.payload.item;
     if (request.params.optionName === "startImage") {
       return {
         enum: getStartImageEnum(item),
-        enum_titles: getStartImageEnumTitles(item)
+        enum_titles: getStartImageEnumTitles(item),
       };
     }
 
     return Boom.badRequest();
-  }
+  },
 };
