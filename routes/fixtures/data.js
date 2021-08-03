@@ -4,6 +4,7 @@ const fixtureDataDirectory = "../../resources/fixtures/data";
 // has to be in sync with files created in build task - see ../../tasks/build.js
 const fixtureData = [
   require(`${fixtureDataDirectory}/two-images.json`),
+  require(`${fixtureDataDirectory}/two-images-disable-fade.json`),
   require(`${fixtureDataDirectory}/two-images-long-labels.json`),
   require(`${fixtureDataDirectory}/two-images-only-required-properties.json`),
   require(`${fixtureDataDirectory}/two-images-valid-invalid-source-links.json`),
@@ -17,7 +18,7 @@ const fixtureData = [
   require(`${fixtureDataDirectory}/five-images.json`),
   require(`${fixtureDataDirectory}/five-images-long-labels.json`),
   require(`${fixtureDataDirectory}/ten-images.json`),
-  require(`${fixtureDataDirectory}/ten-images-long-labels.json`)
+  require(`${fixtureDataDirectory}/ten-images-long-labels.json`),
 ];
 
 module.exports = {
@@ -25,9 +26,9 @@ module.exports = {
   method: "GET",
   options: {
     tags: ["api"],
-    cors: true
+    cors: true,
   },
   handler: (request, h) => {
     return fixtureData;
-  }
+  },
 };

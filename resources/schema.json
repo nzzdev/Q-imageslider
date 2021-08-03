@@ -148,6 +148,11 @@
               }
             }
           }
+        },
+        "disableFade": {
+          "title": "Überblendung deaktivieren",
+          "type": "boolean",
+          "default": false
         }
       }
     }

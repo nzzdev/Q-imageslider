@@ -27,7 +27,7 @@
 		<picture>
 			<source type="image/webp" srcset="{{ image.urls.webp1x }} 1x, {{ image.urls.webp2x }} 2x, {{ image.urls.webp3x }} 3x, {{ image.urls.webp4x }} 4x">
 			<source srcset="{{ image.urls.image1x }} 1x, {{ image.urls.image2x }} 2x, {{ image.urls.image3x }} 3x, {{ image.urls.image4x }} 4x">
-			<img class="q-imageslider-image" data-imageIndex="{{ loop.index0 }}" style="position:absolute; display:block; width:100%; {% if loop.index0 === item.options.startImage %} opacity: 1; {% else %} opacity: 0; {% endif %}"
+			<img class="q-imageslider-image {% if not item.options.disableFade %}q-imageslider-image--fade{% endif %}" data-imageIndex="{{ loop.index0 }}" style="position:absolute; display:block; width:100%; {% if loop.index0 === item.options.startImage %} opacity: 1; {% else %} opacity: 0; {% endif %}"
 			 src="{{ image.urls.image1x }}">
 		</picture>
 		{% endif %} {%- endfor %}
