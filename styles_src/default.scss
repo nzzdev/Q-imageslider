@@ -2,12 +2,8 @@
   opacity: 1 !important;
 }
 
-.q-imageslider-image {
+.q-imageslider-image--fade {
   transition: opacity 350ms ease-out;
-}
-
-.q-imageslider-image.q-imageslider-image--disable-fade {
-  transition: opacity 50ms ease-out;
 }
 
 .q-imageslider-image--is-visible {
