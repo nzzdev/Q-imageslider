@@ -14,7 +14,7 @@
 	<div class="q-imageslider-bar s-color-gray-4"></div>
 </div>
 {% else %}
-<div class="s-input-switch s-input-switch--centered">
+<div class="s-input-switch q-imageslider-input-switch s-input-switch--centered">
 	<input class="q-imageslider-switch" type="checkbox" {% if not(item.options.startImage===0 ) %} checked {% endif %}/> {%-
 	for image in item.images %}
 	<label>{{ image.label }}</label>
