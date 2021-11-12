@@ -87,8 +87,11 @@ function getScript(
     var imageSliderControlEvent = new CustomEvent('q-tracking-event', {
       bubbles: true,
       detail: {
-        id: itemId,
-        eventAction: "q-imageslider-next-image"
+        eventInfo: {
+          componentName: "q-imageslider",
+          eventAction: "nextImage-qId-" + itemId,
+          eventNonInteractive: false
+        }
       }
     });
     imageSliderRootElement.dispatchEvent(imageSliderControlEvent);
@@ -255,5 +258,5 @@ function getScript(
 }
 
 module.exports = {
-  getScript: getScript
+  getScript: getScript,
 };
