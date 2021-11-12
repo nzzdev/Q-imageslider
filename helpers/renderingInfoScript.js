@@ -89,7 +89,7 @@ function getScript(
       detail: {
         eventInfo: {
           componentName: "q-imageslider",
-          eventAction: "nextImage-qId-" + itemId,
+          eventAction: "next-image",
           eventNonInteractive: false
         }
       }
