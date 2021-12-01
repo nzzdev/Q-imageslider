@@ -5,6 +5,6 @@ module.exports = [
   require("./script.js"),
   require("./health.js"),
   require("./fixtures/data.js"),
-  require("./dynamic-enum.js"),
-  require("./locales.js")
+  require("./dynamic-schema.js"),
+  require("./locales.js"),
 ].concat(require("./schema.js"));

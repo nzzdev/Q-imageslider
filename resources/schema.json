@@ -140,10 +140,10 @@
           "title": "Startbild",
           "type": "number",
           "Q:options": {
-            "dynamicEnum": {
+            "dynamicSchema": {
               "type": "ToolEndpoint",
               "config": {
-                "endpoint": "dynamic-enum/startImage",
+                "endpoint": "dynamic-schema/startImage",
                 "fields": ["images"]
               }
             }
