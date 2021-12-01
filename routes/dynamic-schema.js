@@ -26,7 +26,7 @@ function getStartImageEnumTitles(item) {
 
 module.exports = {
   method: "POST",
-  path: "/dynamic-enum/{optionName}",
+  path: "/dynamic-schema/{optionName}",
   options: {
     validate: {
       payload: Joi.object(),
@@ -37,7 +37,9 @@ module.exports = {
     if (request.params.optionName === "startImage") {
       return {
         enum: getStartImageEnum(item),
-        enum_titles: getStartImageEnumTitles(item),
+        "Q:options": {
+          enum_titles: getStartImageEnumTitles(item),
+        },
       };
     }
 
